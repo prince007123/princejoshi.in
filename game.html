@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Catcher Game — PRINCE JOSHI</title>
+<style>
+body{
+  margin:0;
+  padding:0;
+  background:#0b0c1a;
+  color:#00fff7;
+  font-family:'Orbitron','Poppins',sans-serif;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  height:100vh;
+  overflow:hidden;
+  transition: background 0.5s;
+}
+h1{
+  margin-top:20px;
+  text-align:center;
+  color:#00fff7;
+}
+#gameContainer{
+  position:relative;
+  width:100%;
+  max-width:600px;
+  height:80vh;
+  background:#111126;
+  border:2px solid #00fff7;
+  border-radius:12px;
+  overflow:hidden;
+  margin-top:20px;
+  transition: background 0.5s, border-color 0.5s;
+}
+#basket{
+  position:absolute;
+  bottom:10px;
+  width:80px;
+  height:20px;
+  background:#0ff;
+  border-radius:10px;
+  left:50%;
+  transform:translateX(-50%);
+}
+.falling{
+  position:absolute;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:#ff00ff;
+  box-shadow:0 0 10px #ff00ff,0 0 20px #ff00ff;
+}
+#scoreBoard{
+  margin-top:10px;
+  font-size:18px;
+}
+button{
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  background:#00fff7;
+  color:#0b0c1a;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+button:hover{
+  background:#0ff;
+  transform:scale(1.05);
+}
+#developerName{
+  margin-top:5px;
+  color:#0ff;
+  font-size:18px;
+  font-weight:700;
+  text-align:center;
+  letter-spacing:2px;
+}
+@media(max-width:600px){
+  #basket{width:60px;height:15px;}
+  .falling{width:25px;height:25px;}
+}
+</style>
+</head>
+<body>
+
+<h1>Neon Catcher — Catch the Neon Balls!</h1>
+<div id="gameContainer">
+<div id="basket"></div>
+</div>
+<div id="scoreBoard">Score: 0 | Missed: 0/5</div>
+<button id="restartBtn">Restart Game</button>
+
+<!-- Developer Name -->
+<div id="developerName">PRINCE JOSHI</div>
+
+<script>
+const gameContainer=document.getElementById('gameContainer');
+const basket=document.getElementById('basket');
+const scoreBoard=document.getElementById('scoreBoard');
+const restartBtn=document.getElementById('restartBtn');
+const developerName=document.getElementById('developerName');
+
+let basketX=gameContainer.offsetWidth/2 - basket.offsetWidth/2;
+let score=0;
+let missed=0;
+let gameInterval;
+let objects=[];
+let speed=2;
+let spawnRate=1500;
+let maxMiss=5;
+let gameOver=false;
+let themeStage=0;
+
+// Theme colors
+const themes=[
+  {bg:'#111126',border:'#00fff7',ball:'#ff00ff'},
+  {bg:'#1a1111',border:'#ff0',ball:'#0ff'},
+  {bg:'#11111a',border:'#ff0fff',ball:'#fff00f'},
+  {bg:'#1a1a11',border:'#ff5555',ball:'#55ff55'},
+  {bg:'#0b1a1a',border:'#ff00aa',ball:'#aa00ff'},
+  {bg:'#1a0b1a',border:'#00ffaa',ball:'#ffaa00'},
+  {bg:'#111111',border:'#ff00ff',ball:'#00ffff'},
+  {bg:'#1a111a',border:'#ffaa00',ball:'#00ffaa'},
+  {bg:'#0b111a',border:'#aa00ff',ball:'#ff00aa'},
+  {bg:'#111a0b',border:'#00ff55',ball:'#ff0055'}
+];
+
+// Move basket
+let isTouch=false,startX;
+document.addEventListener('keydown',e=>{
+    if(gameOver) return;
+    if(e.key==='ArrowLeft'){basketX-=20;}
+    if(e.key==='ArrowRight'){basketX+=20;}
+    if(basketX<0) basketX=0;
+    if(basketX>gameContainer.offsetWidth-basket.offsetWidth) basketX=gameContainer.offsetWidth-basket.offsetWidth;
+    basket.style.left=basketX+'px';
+});
+
+// Mobile touch
+gameContainer.addEventListener('touchstart',e=>{isTouch=true;startX=e.touches[0].clientX;});
+gameContainer.addEventListener('touchmove',e=>{
+    if(isTouch && !gameOver){
+        let touchX=e.touches[0].clientX;
+        let delta=touchX-startX;
+        basketX+=delta;
+        if(basketX<0) basketX=0;
+        if(basketX>gameContainer.offsetWidth-basket.offsetWidth) basketX=gameContainer.offsetWidth-basket.offsetWidth;
+        basket.style.left=basketX+'px';
+        startX=touchX;
+    }
+});
+gameContainer.addEventListener('touchend',()=>{isTouch=false;});
+
+// Create falling object
+function createObject(){
+    if(gameOver) return;
+    const obj=document.createElement('div');
+    obj.classList.add('falling');
+    obj.style.left=Math.random()*(gameContainer.offsetWidth-30)+'px';
+    obj.style.top='-30px';
+    // color based on theme
+    obj.style.background=themes[themeStage].ball;
+    obj.style.boxShadow=`0 0 10px ${themes[themeStage].ball},0 0 20px ${themes[themeStage].ball}`;
+    gameContainer.appendChild(obj);
+    objects.push(obj);
+}
+
+// Game loop
+function update(){
+    objects.forEach((obj,i)=>{
+        let top=parseFloat(obj.style.top);
+        obj.style.top=top+speed+'px';
+
+        // Catch collision
+        if(top+30 >= gameContainer.offsetHeight-10){
+            const objLeft=parseFloat(obj.style.left);
+            if(objLeft+30 >= basketX && objLeft <= basketX+basket.offsetWidth){
+                score+=10;
+                scoreBoard.textContent='Score: '+score+' | Missed: '+missed+'/'+maxMiss;
+                obj.remove();
+                objects.splice(i,1);
+                checkThemeChange();
+            } else {
+                missed++;
+                scoreBoard.textContent='Score: '+score+' | Missed: '+missed+'/'+maxMiss;
+                obj.remove();
+                objects.splice(i,1);
+                if(missed>=maxMiss){
+                    gameOver=true;
+                    alert('Game Over! You missed '+missed+' balls.');
+                }
+            }
+        }
+    });
+}
+
+// Theme change
+function checkThemeChange(){
+    let stage=Math.floor(score/100);
+    if(stage>themeStage && stage<themes.length){
+        themeStage=stage;
+        document.body.style.background=themes[themeStage].bg;
+        gameContainer.style.background=themes[themeStage].bg;
+        gameContainer.style.borderColor=themes[themeStage].border;
+    }
+}
+
+// Start game
+function startGame(){
+    score=0;
+    missed=0;
+    themeStage=0;
+    gameOver=false;
+    scoreBoard.textContent='Score: '+score+' | Missed: '+missed+'/'+maxMiss;
+    objects.forEach(o=>o.remove());
+    objects=[];
+    document.body.style.background=themes[themeStage].bg;
+    gameContainer.style.background=themes[themeStage].bg;
+    gameContainer.style.borderColor=themes[themeStage].border;
+    clearInterval(gameInterval);
+    gameInterval=setInterval(()=>{createObject();},spawnRate);
+    requestAnimationFrame(gameLoop);
+}
+
+// Restart button
+restartBtn.addEventListener('click',()=>{startGame();});
+
+// Animation frame
+function gameLoop(){
+    if(!gameOver){
+        update();
+        requestAnimationFrame(gameLoop);
+    }
+}
+
+// Initial start
+startGame();
+</script>
+
+</body>
+</html>
