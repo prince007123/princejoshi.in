@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Business Site — Futurestick</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #01063c;
+      color: #111;
+      overflow-x: hidden;
+    }
+
+    header {
+      height: 100vh;
+      background: linear-gradient(to right, #090031, #05252c);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.3rem;
+      max-width: 600px;
+    }
+
+    header button {
+      margin-top: 20px;
+      padding: 12px 30px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #fff;
+      color: #0077b6;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    header button:hover {
+      background: #111;
+      color: white;
+    }
+
+    section {
+      padding: 70px 20px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #0077b6;
+    }
+
+    .services, .testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: #00b4d8;
+    }
+
+    form {
+      max-width: 500px;
+      margin: auto;
+      text-align: left;
+    }
+
+    form input, form textarea, form button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    form input:focus, form textarea:focus {
+      border-color: #00b4d8;
+    }
+
+    form button {
+      background: #0077b6;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    form button:hover {
+      background: #00b4d8;
+    }
+
+    /* Scroll reveal effect */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Grow Your Business with Us</h1>
+    <p>We provide innovative solutions to take your business to the next level. Trusted by startups and enterprises worldwide.</p>
+    <button>Get Started</button>
+  </header>
+
+  <section>
+    <h2>Our Services</h2>
+    <div class="services">
+      <div class="card reveal">
+        <h3>Web Development</h3>
+        <p>Modern, responsive and scalable websites to boost your online presence.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Digital Marketing</h3>
+        <p>SEO, social media and growth campaigns to reach the right audience.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Business Strategy</h3>
+        <p>Consulting and planning to make your business thrive in competitive markets.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Testimonials</h2>
+    <div class="testimonials">
+      <div class="card reveal">
+        <p>"This team transformed our website and doubled our sales. Highly recommended!"</p>
+        <strong>- Client A</strong>
+      </div>
+      <div class="card reveal">
+        <p>"Professional and innovative. Our digital presence has never been better."</p>
+        <strong>- Client B</strong>
+      </div>
+      <div class="card reveal">
+        <p>"Great strategies and outstanding support. They truly care about results."</p>
+        <strong>- Client C</strong>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Contact Us</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="5" placeholder="Your Message"></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <script>
+    // Scroll reveal animation
+    function revealOnScroll() {
+      const reveals = document.querySelectorAll(".reveal");
+      for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveals[i].getBoundingClientRect().top;
+        const elementVisible = 100;
+
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        } else {
+          reveals[i].classList.remove("active");
+        }
+      }
+    }
+
+    window.addEventListener("scroll", revealOnScroll);
+    revealOnScroll();
+  </script>
+</body>
+</html>
