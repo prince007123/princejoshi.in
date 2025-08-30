@@ -190,21 +190,30 @@
       <p class="section-sub">Tell me about your project. I’ll reply within 24 hours.</p>
       <div class="grid contact-grid">
         <div class="card">
-          <form onsubmit="event.preventDefault(); alert('Thanks! I will get back to you.'); this.reset();">
-            <label>Your Name</label>
-            <input required type="text" placeholder="e.g., Rahul Verma" />
-            <label>Email</label>
-            <input required type="email" placeholder="you@example.com" />
-            <label>Company / Brand (optional)</label>
-            <input type="text" placeholder="Brand name (optional)" />
-            <label>Project brief</label>
-            <textarea rows="5" placeholder="What do you need? Goals, pages, references, budget..."></textarea>
-            <button class="btn primary" type="submit">Send Message</button>
-          </form>
+         <form action="https://formsubmit.co/uk05065020524@gmail.com" method="POST">
+  <label>Your Name</label>
+  <input required type="text" name="name" placeholder="e.g., Rahul Verma" />
+
+  <label>Email</label>
+  <input required type="email" name="email" placeholder="you@example.com" />
+
+  <label>Company / Brand (optional)</label>
+  <input type="text" name="company" placeholder="Brand name (optional)" />
+
+  <label>Project brief</label>
+  <textarea rows="5" name="message" placeholder="What do you need? Goals, pages, references, budget..."></textarea>
+
+  <button class="btn primary" type="submit">Send Message</button>
+
+  <!-- Hidden fields for better control -->
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_next" value="https://princejoshi.in/thanks.html">
+</form>
+
         </div>
         <div class="card">
           <h4>Direct Contact</h4>
-          <p>Email: <a href="mailto:hello@princejoshi.co.in">hello@princejoshi.in</a></p>
+          <p>Email: <a href="mailto:uk05065020524@gmail.com">uk05065020524@gmail.com</a></p>
           <p>WhatsApp: <a href="https://wa.me/917668187737">+91-7668187737</a></p>
         </div>
       </div>
@@ -219,6 +228,7 @@
   
 </body>
 </html>
+
 
 
 
