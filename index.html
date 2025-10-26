@@ -162,65 +162,7 @@
 </section>
 
 
-  <!-- IoT / Panic Section -->
-<section id="iot" class="relative bg-gradient-to-br from-blue-950 via-blue-800 to-blue-700 py-24 md:py-32 text-white overflow-hidden">
-  <!-- Animated background glow -->
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_70%)] animate-pulse"></div>
-
-  <div class="relative max-w-6xl mx-auto px-6 text-center z-10">
-    <h2 class="text-4xl md:text-5xl font-extrabold mb-6 tracking-wide drop-shadow-lg">
-      IoT-Powered Emergency Response System
-    </h2>
-    <p class="text-blue-100 max-w-3xl mx-auto mb-10 text-lg md:text-xl leading-relaxed">
-      Your safety is our priority. With one tap, our system instantly alerts emergency responders and starts location tracking.
-      Built with IoT + AI for real-time, smart rescue.
-    </p>
-
-    <!-- Panic Button -->
-    <div class="flex flex-col items-center justify-center space-y-8">
-      <div class="relative">
-        <div class="absolute inset-0 bg-yellow-400 blur-3xl opacity-30 rounded-full animate-ping"></div>
-        <button id="panicBtn"
-          class="relative bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-extrabold text-2xl px-12 py-6 rounded-full shadow-2xl transition-transform transform hover:scale-110 active:scale-95 flex items-center">
-          <i class="fa-solid fa-triangle-exclamation mr-3 text-3xl"></i>
-          Activate Safety Alert
-        </button>
-      </div>
-
-      <div class="text-center">
-        <div id="statusBox"
-          class="text-base md:text-lg text-yellow-200 bg-white/10 px-6 py-3 rounded-full inline-block shadow-md backdrop-blur-sm">
-          🟡 Status: <span class="font-semibold">Idle</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Additional Info Section -->
-    <div class="mt-16 grid md:grid-cols-3 gap-8 text-left">
-      <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-sm shadow-md hover:scale-105 transition-transform">
-        <h3 class="text-xl font-semibold mb-2 text-yellow-300">1️⃣ IoT Panic Device</h3>
-        <p class="text-blue-100 leading-relaxed">
-          Integrated with IoT devices and wearables that can trigger the alert remotely, ensuring help even when the user can’t reach the phone.
-        </p>
-      </div>
-      <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-sm shadow-md hover:scale-105 transition-transform">
-        <h3 class="text-xl font-semibold mb-2 text-yellow-300">2️⃣ AI Smart Detection</h3>
-        <p class="text-blue-100 leading-relaxed">
-          Detects unusual motion, fall, or sound patterns automatically — initiating a pre-alert with 10-second cancel timer before final SOS.
-        </p>
-      </div>
-      <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-sm shadow-md hover:scale-105 transition-transform">
-        <h3 class="text-xl font-semibold mb-2 text-yellow-300">3️⃣ Real-Time Response</h3>
-        <p class="text-blue-100 leading-relaxed">
-          Instantly shares live GPS coordinates and situation status to control rooms or emergency contacts through secure channels.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <audio id="alarmSound" src="emergency-alarm-69780.mp3" preload="auto"></audio>
-</section>
-
+ <!-- IoT / Panic Section --> <section id="iot" class="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 py-16 text-white overflow-hidden"> <div class="relative max-w-6xl mx-auto px-6 text-center"> <h2 class="text-3xl md:text-4xl font-bold mb-4">IoT-Based Emergency Trigger</h2> <p class="text-blue-100 max-w-2xl mx-auto mb-6 text-lg leading-relaxed">Press the button below to trigger the safety alert.</p> <button id="panicBtn" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-semibold text-lg px-8 py-4 rounded-full shadow-lg transition-transform transform hover:scale-105"> <i class="fa-solid fa-bell mr-2"></i> Activate Safety Alert </button> <div class="mt-8"> <div id="statusBox" class="text-sm text-yellow-100">Status: Idle</div> </div> <audio id="alarmSound" src="emergency-alarm-69780.mp3" preload="auto"></audio> </div> </section>
 
   <section id="geo-fence" class="py-14 bg-gradient-to-br from-blue-50 to-blue-100">
   <div class="max-w-5xl mx-auto px-6 text-center">
@@ -817,3 +759,4 @@ trackLocation();
 </script>
 </body>
 </html>
+
