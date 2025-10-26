@@ -1,280 +1,819 @@
 <!DOCTYPE html>
 <html lang="en">
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Suraksha Setu</title>
 
-  <!-- Primary SEO -->
-  <title>Prince Joshi — Web Developer | Portfolio & Projects</title>
-  <meta name="description" content="Official website of Prince Joshi — Futuristic Web Developer. I build fast, secure, SEO-friendly websites & e-commerce solutions. Available for projects in 2025.">
-  <meta name="keywords" content="Prince Joshi, Web Developer, Portfolio, Business Website, E-commerce, WordPress Developer, Elementor, SEO Ready">
-  <link rel="canonical" href="https://princejoshi.in/" />
-  <link rel="manifest" href="manifest.json">
+  <!-- Tailwind (dev CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
-
-  <!-- Open Graph (for social sharing) -->
-  <meta property="og:title" content="Prince Joshi — Web Developer | Portfolio & Projects" />
-  <meta property="og:description" content="I build futuristic, fast & trusted websites. Check out my portfolio and services. Available for projects in 2025." />
-  <meta property="og:image" content="https://princejoshi.in/myimageforprofile.jpg" />
-  <meta property="og:url" content="https://princejoshi.in/" />
-  <meta property="og:type" content="website" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Prince Joshi — Web Developer" />
-  <meta name="twitter:description" content="Official portfolio of Prince Joshi. Building futuristic, secure & SEO-ready websites." />
-  <meta name="twitter:image" content="https://princejoshi.in/myimageforprofile.jpg" />
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    #mobile-menu { transition: left 0.25s ease; }
+    /* simple modal backdrop blur */
+    .backdrop-blur { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  </style>
 </head>
+<body class="bg-gray-50 text-gray-800">
 
-<body>
-  <!-- Animated Orbs -->
-  <div class="orb cyan"></div>
-  <div class="orb purple"></div>
+  <!-- Top Bar -->
+  <div class="bg-blue-900 text-white text-sm py-2 px-4 flex justify-between items-center">
+    <div><i class="fas fa-phone-alt"></i> Emergency Toll-Free: <strong>1800-112-247</strong></div>
+    <div class="flex items-center space-x-4">
+      <div class="hidden sm:block"><i class="fas fa-envelope"></i> help@surakshasetu.in</div>
+      <select class="bg-blue-800 text-white border-none rounded px-2 py-1">
+        <option>English</option>
+        <option>हिन्दी</option>
+      </select>
+    </div>
+  </div>
 
-  <!-- Header -->
-  <header>
-    <div class="nav container">
-      <a class="brand" href="#hero">
-        <div class="logo"><span>PJ</span></div>
-        <h1>PRINCE JOSHI</h1>
-      </a>
+  <!-- Navbar -->
+  <header class="bg-white shadow-md relative z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="logo" class="h-9 w-9">
+        <h1 class="text-2xl font-bold text-blue-700">SurakshaSetu</h1>
+      </div>
 
-      
-
-      <button class="menu-toggle" id="menuBtn">☰ Menu</button>
-
-      <nav class="primary">
-        <a href="#work">Work</a>
-        <a href="#services">Services</a>
-        <a href="#about">About</a>
-        <a href="#contact" class="btn">Contact</a>
+      <nav class="hidden md:flex space-x-8 font-semibold">
+        <a href="#" class="hover:text-blue-700">Home</a>
+        <a href="#about" class="hover:text-blue-700">About</a>
+        <a href="#modules" class="hover:text-blue-700">Modules</a>
+        <a href="#services" class="hover:text-blue-700">Services</a>
+        <a href="#contact" class="hover:text-blue-700">Contact</a>
       </nav>
+
+      <div class="flex items-center gap-3">
+        <!-- Register button - visible on all sizes -->
+        <button id="openRegisterBtn" class="hidden md:inline-block bg-sky-600 text-white px-4 py-2 rounded-full shadow hover:bg-sky-700">
+          <i class="fa-solid fa-user-plus mr-2"></i> Register
+        </button>
+
+        <!-- Mobile: register icon near hamburger -->
+        <button id="openRegisterBtnMobile" class="md:hidden text-blue-700 p-2">
+          <i class="fa-solid fa-user-plus text-lg"></i>
+        </button>
+
+        <button id="menu-btn" class="md:hidden text-3xl text-blue-700 focus:outline-none">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
     </div>
 
-    
-
-    <div id="mobile-menu" class="drawer">
-      <a href="#work">Work</a>
-      <a href="#services">Services</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+    <!-- Mobile overlay & menu -->
+    <div id="overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+    <div id="mobile-menu" class="fixed top-0 left-[-100%] w-2/3 sm:w-1/3 h-full bg-blue-900 text-white p-6 flex flex-col space-y-6 pt-16 z-50">
+      <button id="close-btn" class="absolute top-4 right-4 text-3xl">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <a href="#" class="hover:text-yellow-300">Home</a>
+      <a href="#about" class="hover:text-yellow-300">About</a>
+      <a href="#modules" class="hover:text-yellow-300">Modules</a>
+      <a href="#services" class="hover:text-yellow-300">Services</a>
+      <a href="#contact" class="hover:text-yellow-300">Contact</a>
+      <button id="mobile-register-in-menu" class="mt-6 bg-sky-600 text-white px-4 py-2 rounded">Register</button>
     </div>
   </header>
 
-  <!-- HERO -->
-  <section id="hero">
-    <div class="container hero">
-      <div>
-        <div class="tag"><span class="dot"></span> Available for projects — 2025</div>
-        <h2 class="big">I build <span class="grad">futuristic</span>, fast & trusted websites.</h2>
-        <p class="lead">Hi, I’m <strong>Prince Joshi</strong> — a Web Developer crafting modern portfolios, business sites & e-commerce that load fast, look premium, and convert.</p>
-        <div class="cta">
-          <a class="btn primary" href="#contact">Hire Me</a>
-          <a class="btn" href="#work">See My Work</a>
-        </div>
-        <div class="chips">
-          <span class="chip">Speed First</span>
-          <span class="chip">Secure</span>
-          <span class="chip">SEO Ready</span>
-          <span class="chip">WordPress</span>
-          <span class="chip">Elementor</span>
-        </div>
+<!-- Hero Section -->
+<section 
+  class="relative min-h-[80vh] flex items-center justify-center bg-cover bg-center text-white" 
+  style="background-image: url('https://images.unsplash.com/photo-1606761568499-6d2451b23c29?auto=format&fit=crop&w=1600&q=80');">
+
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-blue-900/70"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 text-center px-6 sm:px-10 md:px-20 max-w-3xl">
+    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight">
+      Empowering Safety with <span class="text-blue-400">AI & Geo-Fencing</span>
+    </h1>
+
+    <p class="text-base sm:text-lg md:text-xl text-gray-200 mb-8 leading-relaxed">
+      Suraksha Setu connects <span class="font-semibold">citizens, authorities, and emergency services</span> through a smart safety network that responds instantly when it matters most.
+    </p>
+
+    <a href="#about" 
+       class="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 hover:bg-blue-700 rounded-full font-semibold text-sm sm:text-base md:text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+      🚀 Explore More
+    </a>
+  </div>
+
+  <!-- Subtle floating circles for motion effect -->
+  <div class="absolute top-12 left-8 w-16 h-16 bg-blue-400/20 rounded-full blur-2xl animate-pulse"></div>
+  <div class="absolute bottom-10 right-8 w-20 h-20 bg-indigo-500/20 rounded-full blur-3xl animate-bounce"></div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="relative bg-gradient-to-br from-blue-50 to-indigo-100 py-16 px-6 md:px-20 overflow-hidden">
+  <div class="max-w-6xl mx-auto text-center relative z-10">
+    <h2 class="text-4xl md:text-5xl font-extrabold text-blue-700 mb-6 tracking-tight">
+      About <span class="text-indigo-600">Suraksha Setu</span>
+    </h2>
+    <p class="text-gray-700 max-w-3xl mx-auto text-lg leading-relaxed mb-8">
+      <span class="font-semibold text-blue-800">Suraksha Setu</span> is an advanced <span class="font-semibold">AI-powered Safety & Incident Response System</span> 
+      designed to enhance security for tourists and citizens.  
+      It integrates <span class="text-indigo-700 font-semibold">Geo-fencing, Real-time Alerts, and Blockchain</span> to provide 
+      a transparent, tamper-proof, and intelligent safety network.
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-8 mt-10 text-left">
+      <!-- Card 1 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-blue-100">
+        <div class="text-blue-600 text-3xl mb-3">🧠</div>
+        <h3 class="text-xl font-bold text-blue-700 mb-2">AI-Powered Detection</h3>
+        <p class="text-gray-600 leading-relaxed">
+          Smart AI algorithms detect unusual activities, trigger early alerts, and help prevent emergencies before they escalate.
+        </p>
       </div>
-      <div class="card profile">
-        <div class="glow"></div>
-        <img src="myimageforprofile.jpg" alt="Prince Joshi portrait placeholder" />
+
+      <!-- Card 2 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-blue-100">
+        <div class="text-blue-600 text-3xl mb-3">🌍</div>
+        <h3 class="text-xl font-bold text-blue-700 mb-2">Geo-Fencing & Alerts</h3>
+        <p class="text-gray-600 leading-relaxed">
+          Real-time location tracking keeps users within safe zones. Automatic alerts are sent when someone enters restricted or dangerous areas.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-blue-100">
+        <div class="text-blue-600 text-3xl mb-3">🔗</div>
+        <h3 class="text-xl font-bold text-blue-700 mb-2">Blockchain Transparency</h3>
+        <p class="text-gray-600 leading-relaxed">
+          Every safety event is securely logged using blockchain, ensuring full transparency and preventing data manipulation.
+        </p>
       </div>
     </div>
-  </section>
 
-  <!-- SERVICES -->
-  <section id="services">
-    <div class="container">
-      <h3 class="section-title">Services</h3>
-      <p class="section-sub">From idea to launch — I design & develop high-converting websites with a futuristic aesthetic.</p>
-      <div class="grid cols-3">
-        <div class="card service">
-          <span class="chip">Portfolio</span>
-          <h3>Personal & Portfolio Sites</h3>
-          <p>Premium one-page or multi-page portfolios with animations, case studies, and lead generation. Clean structure, easy CMS, and fast page loads.</p>
-        </div>
-        <div class="card service">
-          <span class="chip">Business</span>
-          <h3>Business Websites</h3>
-          <p>Credible service sites that build trust, boost inquiries, and look premium across devices. Forms, maps, CTAs — all optimized.</p>
-        </div>
-        <div class="card service">
-          <span class="chip">Shop</span>
-          <h3>E-commerce (WooCommerce)</h3>
-          <p>Modern storefronts with filters, search, and smooth checkout. Stripe/Razorpay integration, product SEO, & analytics.</p>
-        </div>
-      </div>
+    <div class="mt-12">
+      <a href="#geo-fence" 
+         class="inline-block px-8 py-3 bg-blue-700 text-white rounded-xl shadow-md hover:bg-blue-800 transition-colors duration-300 font-semibold">
+        Explore Geo-Fencing
+      </a>
     </div>
-  </section>
+  </div>
 
-  <!-- WORK -->
-  <section id="work">
-    <div class="container">
-      <h3 class="section-title">Selected Work</h3>
-      <p class="section-sub">A few recent builds. In WordPress, Elementor, and custom code where it matters.</p>
-      <div class="grid cols-3">
-        <div class="work-card">
-          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop" alt="Tech Portfolio UI"/>
-          <div class="work-meta">
-            <span class="title">Tech Portfolio</span>
-            <a class="btn" href="tech.html">View</a>
-          </div>
-        </div>
-        <div class="work-card">
-          <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=1200&auto=format&fit=crop" alt="Business site layout"/>
-          <div class="work-meta">
-            <span class="title">Business Site</span>
-            <a class="btn" href="buissness.html">View</a>
-          </div>
-        </div>
-        <div class="work-card">
-          <img src="https://images.unsplash.com/photo-1545235617-9465d2a55698?q=80&w=1200&auto=format&fit=crop" alt="Shop UI mockup"/>
-          <div class="work-meta">
-            <span class="title">Shop UI</span>
-            <a class="btn" href="shop.html">View</a>
-          </div>
-        </div>
-              <div class="work-card">
-          <img src="glenn-carstens-peters-0woyPEJQ7jc-unsplash.jpg" alt="Tech Portfolio UI"/>
-          <div class="work-meta">
-            <span class="title">Web Game Design</span>
-            <a class="btn" href="game.html">View</a> 
-<!--             jlfa -->
-          </div>
-        </div>
+  <!-- Background Glow -->
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.15),transparent_70%)]"></div>
+</section>
+
+
+  <!-- IoT / Panic Section -->
+<section id="iot" class="relative bg-gradient-to-br from-blue-950 via-blue-800 to-blue-700 py-24 md:py-32 text-white overflow-hidden">
+  <!-- Animated background glow -->
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_70%)] animate-pulse"></div>
+
+  <div class="relative max-w-6xl mx-auto px-6 text-center z-10">
+    <h2 class="text-4xl md:text-5xl font-extrabold mb-6 tracking-wide drop-shadow-lg">
+      IoT-Powered Emergency Response System
+    </h2>
+    <p class="text-blue-100 max-w-3xl mx-auto mb-10 text-lg md:text-xl leading-relaxed">
+      Your safety is our priority. With one tap, our system instantly alerts emergency responders and starts location tracking.
+      Built with IoT + AI for real-time, smart rescue.
+    </p>
+
+    <!-- Panic Button -->
+    <div class="flex flex-col items-center justify-center space-y-8">
+      <div class="relative">
+        <div class="absolute inset-0 bg-yellow-400 blur-3xl opacity-30 rounded-full animate-ping"></div>
+        <button id="panicBtn"
+          class="relative bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-extrabold text-2xl px-12 py-6 rounded-full shadow-2xl transition-transform transform hover:scale-110 active:scale-95 flex items-center">
+          <i class="fa-solid fa-triangle-exclamation mr-3 text-3xl"></i>
+          Activate Safety Alert
+        </button>
       </div>
-    </div>
-  </section>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="container">
-      <h3 class="section-title">About</h3>
-      <div class="grid about-grid">
-        <div class="card">
-          <p class="lead">I’m Prince — a WordPress + Elementor developer focused on performance, security and a futuristic visual style. I build experiences that look premium and feel ultra-smooth.</p>
-          <div class="stats-grid">
-            <div class="card"><strong>30+</strong><br/><span>Projects</span></div>
-            <div class="card"><strong>5★</strong><br/><span>Client Rating</span></div>
-            <div class="card"><strong>90+ ⚡</strong><br/><span>Lighthouse</span></div>
-          </div>
-        </div>
-        <div class="card">
-          <h4>Tech Stack</h4>
-          <div class="chips">
-            <span class="chip">WordPress</span>
-            <span class="chip">Elementor</span>
-            <span class="chip">WooCommerce</span>
-            <span class="chip">HTML</span>
-            <span class="chip">CSS</span>
-            <span class="chip">JavaScript</span>
-            <span class="chip">RankMath SEO</span>
-            <span class="chip">Performance</span>
-          </div>
+      <div class="text-center">
+        <div id="statusBox"
+          class="text-base md:text-lg text-yellow-200 bg-white/10 px-6 py-3 rounded-full inline-block shadow-md backdrop-blur-sm">
+          🟡 Status: <span class="font-semibold">Idle</span>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- TESTIMONIALS -->
-  <section id="testimonials">
-    <div class="container">
-      <h3 class="section-title">What clients say</h3>
-      <div class="grid cols-3">
-        <div class="card">
-          <p class="quote">“Clean design, fast site, and amazing support. Prince delivered beyond expectations.”</p>
-          <div class="avatar-meta"><div class="avatar"></div><strong>R. Sharma</strong></div>
-        </div>
-        <div class="card">
-          <p class="quote">“Our portfolio looks premium now. Love the futuristic vibe and smooth animations.”</p>
-          <div class="avatar-meta"><div class="avatar"></div><strong>M. Gupta</strong></div>
-        </div>
-        <div class="card">
-          <p class="quote">“Great communication, SEO friendly build, and clear handover. Highly recommend.”</p>
-          <div class="avatar-meta"><div class="avatar"></div><strong>A. Khan</strong></div>
-        </div>
+    <!-- Additional Info Section -->
+    <div class="mt-16 grid md:grid-cols-3 gap-8 text-left">
+      <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-sm shadow-md hover:scale-105 transition-transform">
+        <h3 class="text-xl font-semibold mb-2 text-yellow-300">1️⃣ IoT Panic Device</h3>
+        <p class="text-blue-100 leading-relaxed">
+          Integrated with IoT devices and wearables that can trigger the alert remotely, ensuring help even when the user can’t reach the phone.
+        </p>
+      </div>
+      <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-sm shadow-md hover:scale-105 transition-transform">
+        <h3 class="text-xl font-semibold mb-2 text-yellow-300">2️⃣ AI Smart Detection</h3>
+        <p class="text-blue-100 leading-relaxed">
+          Detects unusual motion, fall, or sound patterns automatically — initiating a pre-alert with 10-second cancel timer before final SOS.
+        </p>
+      </div>
+      <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-sm shadow-md hover:scale-105 transition-transform">
+        <h3 class="text-xl font-semibold mb-2 text-yellow-300">3️⃣ Real-Time Response</h3>
+        <p class="text-blue-100 leading-relaxed">
+          Instantly shares live GPS coordinates and situation status to control rooms or emergency contacts through secure channels.
+        </p>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="container">
-      <h3 class="section-title">Let’s build your website</h3>
-      <p class="section-sub">Tell me about your project. I’ll reply within 24 hours.</p>
-      <div class="grid contact-grid">
-        <div class="card">
-         <form action="https://formsubmit.co/uk05065020524@gmail.com" method="POST">
-  <label>Your Name</label>
-  <input required type="text" name="name" placeholder="e.g., Rahul Verma" />
+  <audio id="alarmSound" src="emergency-alarm-69780.mp3" preload="auto"></audio>
+</section>
 
-  <label>Email</label>
-  <input required type="email" name="email" placeholder="you@example.com" />
 
-  <label>Company / Brand (optional)</label>
-  <input type="text" name="company" placeholder="Brand name (optional)" />
+  <section id="geo-fence" class="py-14 bg-gradient-to-br from-blue-50 to-blue-100">
+  <div class="max-w-5xl mx-auto px-6 text-center">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-blue-700 mb-3 tracking-tight">
+      🚧 Geo-Fencing Zone
+    </h2>
+    <p class="mb-6 text-gray-700 text-lg">
+      Stay within the <span class="font-semibold text-blue-800">safe area</span>.  
+      If you move outside, an alert will be triggered automatically.
+    </p>
 
-  <label>Project brief</label>
-  <textarea rows="5" name="message" placeholder="What do you need? Goals, pages, references, budget..."></textarea>
+    <div class="relative shadow-lg border border-blue-200 rounded-2xl overflow-hidden">
+      <div id="map" class="w-full h-[400px] md:h-[500px] rounded-2xl"></div>
 
-  <button class="btn primary" type="submit">Send Message</button>
-
-  <!-- Hidden fields for better control -->
-  <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_next" value="https://princejoshi.in/thanks.html">
-</form>
-
-        </div>
-        <div class="card">
-          <h4>Direct Contact</h4>
-          <p>Email: <a href="mailto:uk05065020524@gmail.com">uk05065020524@gmail.com</a></p>
-          <p>WhatsApp: <a href="https://wa.me/917668187737">+91-7668187737</a></p>
-        </div>
+      <!-- Overlay Status -->
+      <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl shadow-md text-left">
+        <p id="geoStatus" class="text-sm font-medium text-gray-700">
+          📍 Tracking your location...
+        </p>
       </div>
     </div>
-  </section>
 
-  <footer>
-    © <span id="y"></span> Prince Joshi • Built with ♥ & a futuristic vibe
+    <!-- Safety Status -->
+    <div class="mt-6">
+      <div id="statusBox"
+           class="inline-block px-6 py-3 bg-green-100 text-green-800 font-semibold rounded-xl border border-green-200 transition-all duration-500">
+        ✅ You are inside the safe zone
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Footer -->
+  <footer class="bg-blue-900 text-white py-6 text-center">
+    <p>&copy; 2025 Suraksha Setu | All Rights Reserved</p>
   </footer>
 
-  <script src="script.js"></script>
-  <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
-  .then(() => console.log('Service Worker Registered!'))
-  .catch((err) => console.log('Service Worker failed:', err));
+  <!-- Register Modal (hidden by default) -->
+  <div id="registerModal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur"></div>
+    <div class="relative bg-white w-full max-w-md mx-4 rounded-2xl p-6 z-50 shadow-xl">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="text-xl font-bold text-sky-600">Register for Alerts</h3>
+        <button id="closeRegister" class="text-gray-500 hover:text-gray-700"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="registerForm" class="space-y-3">
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Full name</label>
+          <input id="reg_name" type="text" required class="mt-1 w-full rounded-lg border p-2" placeholder="Your full name">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Email</label>
+          <input id="reg_email" type="email" required class="mt-1 w-full rounded-lg border p-2" placeholder="you@mail.com">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Emergency Number</label>
+          <input id="reg_phone" type="tel" required class="mt-1 w-full rounded-lg border p-2" placeholder="+91 98xxxxxxxx">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Upload Photo (MANDATORY)</label>
+          <input id="reg_photo" type="file" accept="image/*" required class="mt-1 w-full" />
+          <p class="text-xs text-slate-400 mt-1">Photo used for identification. Max recommended 5MB.</p>
+          <div id="photoPreview" class="mt-2"></div>
+        </div>
+
+        <div class="flex gap-2">
+          <button id="saveRegister" type="submit" class="flex-1 bg-sky-600 text-white py-2 rounded-full">Register Now</button>
+          <button id="btnGetLoc" type="button" class="bg-emerald-500 text-white py-2 rounded-full px-3">Allow Location</button>
+        </div>
+        <p id="regStatus" class="text-sm text-green-600 hidden">Saved ✓</p>
+        <p id="regError" class="text-sm text-red-600 hidden"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== PANIC ALERT POPUP ==================== -->
+<div id="panicPopup" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl p-6 text-center shadow-2xl max-w-sm w-[90%]">
+    <h2 class="text-2xl font-bold text-red-600 mb-2">🚨 Possible Emergency!</h2>
+    <p id="countdownText" class="text-gray-700 text-lg mb-4">Sending alert in 10s...</p>
+    <button id="cancelBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition">Cancel Alert</button>
+  </div>
+</div>
+
+<script>
+// ==================== GLOBAL VARIABLES ====================
+let alertTimer = null;
+let countdown = 10;
+let alertTriggered = false;
+
+// ==================== MAIN ALERT FUNCTION ====================
+function triggerPanic() {
+  if (alertTriggered) return; // Avoid multiple triggers
+  alertTriggered = true;
+
+  const popup = document.getElementById("panicPopup");
+  const countdownText = document.getElementById("countdownText");
+  const cancelBtn = document.getElementById("cancelBtn");
+
+  popup.classList.remove("hidden");
+  countdown = 10;
+  countdownText.textContent = `Sending alert in ${countdown}s...`;
+
+  // Countdown logic
+  alertTimer = setInterval(() => {
+    countdown--;
+    countdownText.textContent = `Sending alert in ${countdown}s...`;
+    if (countdown <= 0) {
+      clearInterval(alertTimer);
+      popup.classList.add("hidden");
+      sendFinalAlert(); // Actual alert
+      alertTriggered = false;
+    }
+  }, 1000);
+
+  // Cancel button logic
+  cancelBtn.onclick = () => {
+    clearInterval(alertTimer);
+    popup.classList.add("hidden");
+    alertTriggered = false;
+    console.log("❌ Alert cancelled by user.");
+  };
+}
+
+// ==================== FINAL ALERT FUNCTION ====================
+function sendFinalAlert() {
+  console.log("🚨 Sending real alert to backend/email...");
+
+  // Example API call — replace with your real backend
+  fetch("http://localhost:3000/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "Emergency detected automatically!" }),
+  })
+    .then(res => res.json())
+    .then(data => console.log("✅ Alert sent successfully!", data))
+    .catch(err => console.error("❌ Failed to send alert", err));
+}
+
+// ==================== 1️⃣ SHAKE DETECTION ====================
+let lastX = 0, lastY = 0, lastZ = 0;
+let shakeThreshold = 15;
+
+window.addEventListener("devicemotion", (event) => {
+  let x = event.accelerationIncludingGravity.x;
+  let y = event.accelerationIncludingGravity.y;
+  let z = event.accelerationIncludingGravity.z;
+
+  let speed = Math.abs(x + y + z - lastX - lastY - lastZ);
+  if (speed > shakeThreshold) {
+    console.log("📱 Shake detected!");
+    triggerPanic();
+  }
+
+  lastX = x;
+  lastY = y;
+  lastZ = z;
+});
+
+// ==================== 2️⃣ SPEED DROP DETECTION ====================
+let lastSpeed = 0;
+let speedDropThreshold = 40; // km/h
+
+if (navigator.geolocation) {
+  setInterval(() => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      let speed = (pos.coords.speed || 0) * 3.6; // convert m/s to km/h
+      if (lastSpeed - speed > speedDropThreshold && lastSpeed > 60) {
+        console.log("💥 Sudden speed drop detected!");
+        triggerPanic();
+      }
+      lastSpeed = speed;
+    });
+  }, 5000);
+}
+
+// ==================== 3️⃣ LOUD SOUND DETECTION ====================
+async function detectLoudSound() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const audioContext = new AudioContext();
+    const source = audioContext.createMediaStreamSource(stream);
+    const analyser = audioContext.createAnalyser();
+    source.connect(analyser);
+    const data = new Uint8Array(analyser.fftSize);
+
+    function checkVolume() {
+      analyser.getByteTimeDomainData(data);
+      let avg = data.reduce((a, b) => a + Math.abs(b - 128), 0) / data.length;
+      if (avg > 80) { // Adjust sensitivity
+        console.log("🎤 Loud sound detected!");
+        triggerPanic();
+      }
+      requestAnimationFrame(checkVolume);
+    }
+    checkVolume();
+  } catch (err) {
+    console.warn("🎧 Mic access denied or unavailable.", err);
+  }
+}
+detectLoudSound();
+
+// 🔴 Test shortcut: Press "T" key to simulate emergency
+document.addEventListener("keydown", (e) => {
+  if (e.key === "t" || e.key === "T") {
+    console.log("⚡ Manual Test Trigger (T pressed)");
+    triggerPanic();
+  }
+});
+
+</script>
+
+
+
+
+
+
+<script>
+async function sendMail() {
+  const res = await fetch("http://localhost:3000/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      to: "your_other_email@gmail.com",
+      subject: "Testing Gmail App Password",
+      text: "If you received this email, setup is working perfectly!"
+    })
+  });
+
+  const data = await res.json();
+  console.log(data);
+  alert("Mail sent successfully!");
 }
 </script>
 
+
+
+  <!-- Scripts -->
+
   
+  <script>
+    /* CONFIG */
+    const AUTHORITY_EMAIL = "uk05065020524@gmail.com";
+    const FORMSUBMIT_ENDPOINT = (to) => `https://formsubmit.co/ajax/${encodeURIComponent(to)}`;
+
+    /* NAV & MOBILE MENU */
+    const menuBtn = document.getElementById("menu-btn");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const closeBtn = document.getElementById("close-btn");
+    const overlay = document.getElementById("overlay");
+    menuBtn.addEventListener("click", () => { mobileMenu.style.left = "0"; overlay.classList.remove("hidden"); });
+    closeBtn.addEventListener("click", () => { mobileMenu.style.left = "-100%"; overlay.classList.add("hidden"); });
+    overlay.addEventListener("click", () => { mobileMenu.style.left = "-100%"; overlay.classList.add("hidden"); });
+
+    // Open register buttons
+    const openRegisterBtn = document.getElementById("openRegisterBtn");
+    const openRegisterBtnMobile = document.getElementById("openRegisterBtnMobile");
+    const mobileRegisterInMenu = document.getElementById("mobile-register-in-menu");
+    const registerModal = document.getElementById("registerModal");
+    const closeRegister = document.getElementById("closeRegister");
+
+    function openModal() { registerModal.classList.remove("hidden"); registerModal.classList.add("flex"); }
+    function closeModal() { registerModal.classList.add("hidden"); registerModal.classList.remove("flex"); }
+
+    openRegisterBtn?.addEventListener("click", openModal);
+    openRegisterBtnMobile?.addEventListener("click", openModal);
+    mobileRegisterInMenu?.addEventListener("click", () => { openModal(); mobileMenu.style.left = "-100%"; overlay.classList.add("hidden"); });
+    closeRegister.addEventListener("click", closeModal);
+
+    // Elements for register form
+    const regForm = document.getElementById("registerForm");
+    const regName = document.getElementById("reg_name");
+    const regEmail = document.getElementById("reg_email");
+    const regPhone = document.getElementById("reg_phone");
+    const regPhoto = document.getElementById("reg_photo");
+    const photoPreview = document.getElementById("photoPreview");
+    const regStatus = document.getElementById("regStatus");
+    const regError = document.getElementById("regError");
+    const btnGetLoc = document.getElementById("btnGetLoc");
+
+    // Load existing saved data
+    window.addEventListener("load", () => {
+      const savedName = localStorage.getItem("su_name");
+      const savedEmail = localStorage.getItem("su_email");
+      const savedPhone = localStorage.getItem("su_phone");
+      const savedPhotoPreview = localStorage.getItem("su_photo_preview");
+      const savedLoc = localStorage.getItem("su_location_link");
+
+      if (savedName) regName.value = savedName;
+      if (savedEmail) regEmail.value = savedEmail;
+      if (savedPhone) regPhone.value = savedPhone;
+      if (savedPhotoPreview) photoPreview.innerHTML = `<img src="${savedPhotoPreview}" class="w-28 h-28 object-cover rounded-md mt-2">`;
+      if (savedLoc) regStatus.textContent = "Location saved ✓";
+
+      // show desktop-register button on small screens also as needed CSS hides it
+      // (already handled)
+    });
+
+    // Photo preview when user selects
+    regPhoto.addEventListener("change", (e) => {
+      const f = e.target.files[0];
+      if (!f) return;
+      if (f.size > 6 * 1024 * 1024) {
+        regError.textContent = "Photo too large (max ~6MB).";
+        regError.classList.remove("hidden");
+        return;
+      }
+      regError.classList.add("hidden");
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        photoPreview.innerHTML = `<img src="${ev.target.result}" class="w-28 h-28 object-cover rounded-md mt-2">`;
+        // Save preview base64 to localStorage
+        localStorage.setItem("su_photo_preview", ev.target.result);
+        localStorage.setItem("su_photo_name", f.name);
+      };
+      reader.readAsDataURL(f);
+    });
+
+    // Allow Location (in modal)
+    btnGetLoc.addEventListener("click", () => {
+      if (!navigator.geolocation) { alert("Geolocation not supported."); return; }
+      btnGetLoc.textContent = "Getting location...";
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const lat = pos.coords.latitude.toFixed(6);
+        const lng = pos.coords.longitude.toFixed(6);
+        const mapsLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+        localStorage.setItem("su_location", `${lat},${lng}`);
+        localStorage.setItem("su_location_link", mapsLink);
+        regStatus.textContent = "Location saved ✓";
+        btnGetLoc.textContent = "Allow Location";
+      }, (err) => {
+        console.warn("Location error:", err);
+        regError.classList.remove("hidden");
+        regError.textContent = "Location denied or unavailable.";
+        btnGetLoc.textContent = "Allow Location";
+      }, { enableHighAccuracy: true, timeout: 10000 });
+    });
+
+    // Registration submit (photo mandatory)
+    regForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      regError.classList.add("hidden");
+      const name = regName.value.trim();
+      const email = regEmail.value.trim().toLowerCase();
+      const phone = regPhone.value.trim();
+
+      if (!name || !email || !phone) {
+        regError.classList.remove("hidden"); regError.textContent = "Please fill all fields.";
+        return;
+      }
+
+      // ensure photo exists (either in input file or saved preview)
+      const file = regPhoto.files && regPhoto.files[0];
+      const preview = localStorage.getItem("su_photo_preview");
+      if (!file && !preview) {
+        regError.classList.remove("hidden"); regError.textContent = "Please upload your photo (mandatory).";
+        return;
+      }
+
+      localStorage.setItem("su_name", name);
+      localStorage.setItem("su_email", email);
+      localStorage.setItem("su_phone", phone);
+      regStatus.classList.remove("hidden");
+      regStatus.textContent = "Saved ✓";
+
+      // If we have a new file, store its preview (already stored on change) and keep file input as is.
+      // We keep preview in localStorage for attaching if user reloads.
+
+      setTimeout(() => {
+        regStatus.classList.add("hidden");
+        closeModal();
+      }, 900);
+    });
+
+    /* Helper: dataURL -> Blob */
+    function dataURLtoBlob(dataurl) {
+      const arr = dataurl.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) u8arr[n] = bstr.charCodeAt(n);
+      return new Blob([u8arr], { type: mime });
+    }
+
+    /* PANIC BUTTON: collect saved data, location, attach photo, and send via FormSubmit */
+    const panicBtn = document.getElementById("panicBtn");
+    const alarmSound = document.getElementById("alarmSound");
+    const statusBox = document.getElementById("statusBox");
+
+    panicBtn.addEventListener("click", async () => {
+      const name = localStorage.getItem("su_name") || "";
+      const email = localStorage.getItem("su_email") || "";
+      const phone = localStorage.getItem("su_phone") || "";
+      const loc = localStorage.getItem("su_location") || "";
+      const locLink = localStorage.getItem("su_location_link") || "";
+      const photoPreview = localStorage.getItem("su_photo_preview") || "";
+      const photoName = localStorage.getItem("su_photo_name") || "photo.jpg";
+
+      if (!name || !email || !phone || !photoPreview) {
+        alert("Please register first with mandatory photo (click Register).");
+        return;
+      }
+
+      // play sound and animate
+      alarmSound.currentTime = 0;
+      alarmSound.play().catch(()=>{ /* ignore autoplay block */ });
+
+      statusBox.textContent = "Sending alert...";
+      panicBtn.disabled = true;
+      panicBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Sending...';
+
+      // Build message body
+      const humanMsg = `Panic Alert triggered!\n\nName: ${name}\nRegistered Email: ${email}\nEmergency Contact: ${phone}\nLocation: ${locLink || loc || 'Not provided'}\n\nPlease respond immediately.`;
+
+      // Prepare FormData for authority
+      const fdAuth = new FormData();
+      fdAuth.append("subject", "🚨 Panic Alert — Suraksha Setu");
+      fdAuth.append("message", humanMsg);
+      fdAuth.append("name", name);
+      fdAuth.append("email", email);
+      fdAuth.append("phone", phone);
+      fdAuth.append("location", locLink || loc);
+
+      // Attach photo: prefer file input file if still available, else use saved preview
+      const fileInput = document.getElementById("reg_photo");
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        fdAuth.append("attachment", fileInput.files[0], fileInput.files[0].name);
+      } else {
+        // convert base64 preview to blob
+        try {
+          const blob = dataURLtoBlob(photoPreview);
+          fdAuth.append("attachment", blob, photoName);
+        } catch (e) {
+          console.warn("Could not attach photo blob:", e);
+        }
+      }
+
+      fdAuth.append("_captcha", "false");
+      fdAuth.append("_template", "table");
+
+      // send to authority
+      try {
+        const resAuth = await fetch(FORMSUBMIT_ENDPOINT(AUTHORITY_EMAIL), { method: "POST", body: fdAuth });
+        if (!resAuth.ok) {
+          const txt = await resAuth.text();
+          console.error("Authority send failed:", resAuth.status, txt);
+          alert("Failed to send to authority. They may need to verify FormSubmit link. Check console.");
+          statusBox.textContent = "Failed to send";
+          panicBtn.disabled = false;
+          panicBtn.innerHTML = '<i class="fa-solid fa-bell mr-2"></i> Activate Safety Alert';
+          return;
+        }
+        console.log("Authority send OK:", await resAuth.json());
+      } catch (err) {
+        console.error("Network error sending to authority:", err);
+        alert("Network error while sending. Check console.");
+        statusBox.textContent = "Network error";
+        panicBtn.disabled = false;
+        panicBtn.innerHTML = '<i class="fa-solid fa-bell mr-2"></i> Activate Safety Alert';
+        return;
+      }
+
+      // send copy to user (optional copy)
+      try {
+        const fdUser = new FormData();
+        fdUser.append("subject", "Copy of Panic Alert — Suraksha Setu");
+        fdUser.append("message", humanMsg);
+        fdUser.append("name", name);
+        fdUser.append("email", email);
+        fdUser.append("phone", phone);
+        fdUser.append("location", locLink || loc);
+        // attach same photo
+        if (fileInput && fileInput.files && fileInput.files[0]) {
+          fdUser.append("attachment", fileInput.files[0], fileInput.files[0].name);
+        } else {
+          const blob2 = dataURLtoBlob(photoPreview);
+          fdUser.append("attachment", blob2, photoName);
+        }
+        fdUser.append("_captcha", "false");
+        fdUser.append("_template", "table");
+
+        const resUser = await fetch(FORMSUBMIT_ENDPOINT(email), { method: "POST", body: fdUser });
+        // note: FormSubmit will send verification to user email first time
+        if (!resUser.ok) {
+          console.warn("User copy failed (this may require verification):", resUser.status, await resUser.text());
+        } else {
+          console.log("User copy OK:", await resUser.json());
+        }
+      } catch (err) {
+        console.warn("Failed sending user copy:", err);
+      }
+
+      // finished
+      statusBox.textContent = "Alert sent ✓";
+      alert("✅ Panic alert sent to authority. A copy was attempted to your email.");
+      panicBtn.disabled = false;
+      panicBtn.innerHTML = '<i class="fa-solid fa-bell mr-2"></i> Activate Safety Alert';
+    });
+  </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>/* ---------- GEO-FENCING SYSTEM ---------- */
+const map = L.map("map").setView([28.6139, 77.2090], 14); // default Delhi
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+}).addTo(map);
+
+// Define geofence center and radius (in meters)
+const fenceCenter = [28.6139, 77.2090];
+const fenceRadius = 300; // 300 meters
+
+// Draw circle zone
+const fenceCircle = L.circle(fenceCenter, {
+  color: "blue",
+  fillColor: "#00f3",
+  fillOpacity: 0.3,
+  radius: fenceRadius,
+}).addTo(map);
+
+// Marker for user
+const userMarker = L.marker(fenceCenter).addTo(map);
+
+const geoStatus = document.getElementById("geoStatus");
+
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371000; // radius of Earth in meters
+  const φ1 = (lat1 * Math.PI) / 180;
+  const φ2 = (lat2 * Math.PI) / 180;
+  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+  const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(Δφ / 2) ** 2 +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+let alertSent = false;
+
+function checkGeoFence(lat, lon) {
+  const dist = getDistance(lat, lon, fenceCenter[0], fenceCenter[1]);
+  if (dist > fenceRadius && !alertSent) {
+    geoStatus.textContent = "🚨 Outside safe zone! Sending alert...";
+    alertSent = true;
+
+    // Trigger backend email
+fetch("http://localhost:3000/send", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    to: "your_email@gmail.com",
+    subject: "Test Alert",
+    text: "GeoFence triggered!",
+  }),
+})
+  .then((res) => res.json())
+  .then((data) => console.log("✅ Mail Response:", data))
+  .catch((err) => console.error("❌ Fetch Error:", err));
+
+  } else if (dist <= fenceRadius) {
+    geoStatus.textContent = "✅ Inside safe zone";
+    alertSent = false;
+  }
+}
+
+function trackLocation() {
+  if (!navigator.geolocation) {
+    geoStatus.textContent = "Geolocation not supported by your browser.";
+    return;
+  }
+  navigator.geolocation.watchPosition(
+    (pos) => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      userMarker.setLatLng([lat, lon]);
+      map.panTo([lat, lon]);
+      checkGeoFence(lat, lon);
+    },
+    (err) => {
+      geoStatus.textContent = "Failed to access location.";
+      console.error(err);
+    },
+    { enableHighAccuracy: true }
+  );
+}
+
+trackLocation();
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
