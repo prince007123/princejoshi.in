@@ -15,6 +15,13 @@
     /* simple modal backdrop blur */
     .backdrop-blur { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
   </style>
+  <script>
+  // ✅ Redirect to auth.html if not logged in
+  if (!localStorage.getItem("token") || !localStorage.getItem("surakshaId")) {
+    window.location.href = "auth.html";
+  }
+</script>
+
 </head>
 <body class="bg-gray-50 text-gray-800">
 
@@ -1106,4 +1113,5 @@ function initMap() {
 
 </body>
 </html>
+
 
