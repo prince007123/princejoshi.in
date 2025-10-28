@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suraksha Setu | Register & Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 text-white flex items-center justify-center min-h-screen">
+
+  <div class="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-md">
+    <h1 id="form-title" class="text-3xl font-bold text-center mb-6">Create Account</h1>
+
+    <!-- ✅ Signup Form -->
+    <form id="signup-form" class="space-y-4">
+      <input type="text" id="name" placeholder="Full Name" class="w-full px-4 py-2 rounded-md text-black" required />
+      <input type="email" id="email" placeholder="Email" class="w-full px-4 py-2 rounded-md text-black" required />
+      <input type="password" id="password" placeholder="Password" class="w-full px-4 py-2 rounded-md text-black" required />
+      <button type="submit" class="bg-green-500 hover:bg-green-600 text-white w-full py-2 rounded-md transition">Sign Up</button>
+    </form>
+
+    <!-- ✅ Login Form -->
+    <form id="login-form" class="space-y-4 hidden">
+      <input type="text" id="login-emailOrId" placeholder="Email or Suraksha ID" class="w-full px-4 py-2 rounded-md text-black" required />
+      <input type="password" id="login-password" placeholder="Password" class="w-full px-4 py-2 rounded-md text-black" required />
+
+      <!-- ✅ Agree Checkbox -->
+      <div class="flex items-center space-x-2 text-sm">
+        <input type="checkbox" id="agreeTerms" class="w-4 h-4" />
+        <label for="agreeTerms" class="text-white">I agree to the <button type="button" id="termsBtn" class="text-yellow-300 underline hover:text-yellow-400">Terms & Conditions</button></label>
+      </div>
+
+      <button id="loginBtn" type="submit" disabled class="bg-blue-400 cursor-not-allowed text-white w-full py-2 rounded-md transition">Login</button>
+    </form>
+
+    <p class="text-center mt-4">
+      <span id="toggle-text">Already have an account?</span>
+      <button id="toggle-btn" class="text-yellow-300 hover:underline">Login here</button>
+    </p>
+
+    <p id="response-message" class="text-center mt-4 font-semibold"></p>
+  </div>
+
+  <!-- ✅ Modal (hidden by default) -->
+  <div id="termsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6 relative">
+      <h2 class="text-2xl font-semibold text-center mb-4 text-blue-800">Suraksha Setu — Terms & Conditions</h2>
+      <div class="overflow-y-auto max-h-80 text-gray-700 text-sm space-y-3">
+        <p>1️⃣ You agree to share your <b>location</b> for safety and assistance.</p>
+        <p>2️⃣ The app may use your <b>microphone</b> for emergency audio alerts.</p>
+        <p>3️⃣ Your <b>Suraksha ID</b> and email are stored securely for authentication only.</p>
+        <p>4️⃣ Geo-fencing alerts may automatically notify authorities in danger situations.</p>
+        <p>5️⃣ Suraksha Setu does <b>not</b> record audio/video without permission.</p>
+        <p>6️⃣ Data is used only when safety tracking or route guidance is active.</p>
+        <p>7️⃣ We are not responsible for GPS accuracy or internet loss issues.</p>
+        <p>8️⃣ You acknowledge the use of AI, IoT, and automation for safety purposes.</p>
+      </div>
+
+      <div class="flex justify-center mt-6 space-x-4">
+        <button id="agreeBtn" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md">I Agree</button>
+        <button id="closeTerms" class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-2 rounded-md">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const signupForm = document.getElementById("signup-form");
+    const loginForm = document.getElementById("login-form");
+    const toggleBtn = document.getElementById("toggle-btn");
+    const formTitle = document.getElementById("form-title");
+    const responseMsg = document.getElementById("response-message");
+    const toggleText = document.getElementById("toggle-text");
+
+    // ✅ Toggle between Login and Signup
+    toggleBtn.addEventListener("click", () => {
+      const signupVisible = !signupForm.classList.contains("hidden");
+      signupForm.classList.toggle("hidden");
+      loginForm.classList.toggle("hidden");
+      formTitle.textContent = signupVisible ? "Login to Your Account" : "Create Account";
+      toggleBtn.textContent = signupVisible ? "Register here" : "Login here";
+      toggleText.textContent = signupVisible ? "New user?" : "Already have an account?";
+      responseMsg.textContent = "";
+    });
+
+    // ✅ Signup logic
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      try {
+        const res = await fetch("/api/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          responseMsg.textContent = `✅ Signup Successful! Your Suraksha ID: ${data.surakshaId}`;
+          responseMsg.classList.remove("text-red-400");
+          responseMsg.classList.add("text-green-300");
+        } else {
+          responseMsg.textContent = `❌ ${data.message}`;
+          responseMsg.classList.add("text-red-400");
+        }
+      } catch (err) {
+        responseMsg.textContent = "❌ Server error during signup.";
+        responseMsg.classList.add("text-red-400");
+      }
+    });
+
+    // ✅ Login logic
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const emailOrId = document.getElementById("login-emailOrId").value.trim();
+      const password = document.getElementById("login-password").value.trim();
+
+      if (!emailOrId || !password) {
+        responseMsg.textContent = "❌ Please enter Email/Suraksha ID and Password.";
+        responseMsg.classList.add("text-red-400");
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ emailOrId, password }),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("surakshaId", data.surakshaId);
+          responseMsg.textContent = `✅ Welcome! Logged in as ${data.surakshaId}`;
+          responseMsg.classList.remove("text-red-400");
+          responseMsg.classList.add("text-green-300");
+          setTimeout(() => (window.location.href = "index.html"), 1500);
+        } else {
+          responseMsg.textContent = `❌ ${data.message}`;
+          responseMsg.classList.add("text-red-400");
+        }
+      } catch (err) {
+        responseMsg.textContent = "❌ Server not responding.";
+        responseMsg.classList.add("text-red-400");
+        console.error("Login error:", err);
+      }
+    });
+
+    // ✅ Terms Modal Logic
+    const termsModal = document.getElementById("termsModal");
+    const termsBtn = document.getElementById("termsBtn");
+    const closeTerms = document.getElementById("closeTerms");
+    const agreeBtn = document.getElementById("agreeBtn");
+    const agreeCheckbox = document.getElementById("agreeTerms");
+    const loginBtn = document.getElementById("loginBtn");
+
+    termsBtn.addEventListener("click", () => termsModal.classList.remove("hidden"));
+    closeTerms.addEventListener("click", () => termsModal.classList.add("hidden"));
+    termsModal.addEventListener("click", (e) => {
+      if (e.target === termsModal) termsModal.classList.add("hidden");
+    });
+
+    // ✅ When user agrees
+    agreeBtn.addEventListener("click", () => {
+      agreeCheckbox.checked = true;
+      loginBtn.disabled = false;
+      loginBtn.classList.remove("bg-blue-400", "cursor-not-allowed");
+      loginBtn.classList.add("bg-blue-600", "hover:bg-blue-700");
+      termsModal.classList.add("hidden");
+    });
+
+    // ✅ Disable login if unchecked
+    agreeCheckbox.addEventListener("change", () => {
+      if (agreeCheckbox.checked) {
+        loginBtn.disabled = false;
+        loginBtn.classList.remove("bg-blue-400", "cursor-not-allowed");
+        loginBtn.classList.add("bg-blue-600", "hover:bg-blue-700");
+      } else {
+        loginBtn.disabled = true;
+        loginBtn.classList.add("bg-blue-400", "cursor-not-allowed");
+        loginBtn.classList.remove("bg-blue-600", "hover:bg-blue-700");
+      }
+    });
+  </script>
+</body>
+</html>

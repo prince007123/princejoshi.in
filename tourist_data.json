@@ -1,0 +1,162 @@
+[
+  {
+    "location": "Manali, Himachal Pradesh",
+    "basePriceHotelPerNight": 2500,
+    "basePriceCabPerKm": 18,
+    "peakMonths": [4, 5, 6],
+    "offMonths": [1, 2, 11],
+    "notes": "Popular hill station; busy in summer months."
+  },
+  {
+    "location": "Jaipur, Rajasthan",
+    "basePriceHotelPerNight": 2000,
+    "basePriceCabPerKm": 15,
+    "peakMonths": [10, 11, 12, 1, 2],
+    "offMonths": [5, 6, 7],
+    "notes": "Preferred in winter; off-season during extreme summer."
+  },
+  {
+    "location": "Goa, Goa",
+    "basePriceHotelPerNight": 3500,
+    "basePriceCabPerKm": 25,
+    "peakMonths": [11, 12, 1, 2],
+    "offMonths": [6, 7, 8],
+    "notes": "Beach destination; high season during winter."
+  },
+  {
+    "location": "Shimla, Himachal Pradesh",
+    "basePriceHotelPerNight": 2400,
+    "basePriceCabPerKm": 18,
+    "peakMonths": [3, 4, 5],
+    "offMonths": [7, 8, 9],
+    "notes": "Hill station; summer escape for tourists."
+  },
+  {
+    "location": "Ooty, Tamil Nadu",
+    "basePriceHotelPerNight": 2200,
+    "basePriceCabPerKm": 16,
+    "peakMonths": [3, 4, 5, 10],
+    "offMonths": [6, 7, 8],
+    "notes": "Hill station in south India; moderate all year."
+  },
+  {
+    "location": "Darjeeling, West Bengal",
+    "basePriceHotelPerNight": 2300,
+    "basePriceCabPerKm": 17,
+    "peakMonths": [4, 5, 10],
+    "offMonths": [6, 7, 8, 9],
+    "notes": "Famous for tea gardens; cool summer destination."
+  },
+  {
+    "location": "Leh-Ladakh, Jammu & Kashmir",
+    "basePriceHotelPerNight": 4000,
+    "basePriceCabPerKm": 25,
+    "peakMonths": [6, 7, 8, 9],
+    "offMonths": [12, 1, 2],
+    "notes": "High altitude region; open mainly in summer."
+  },
+  {
+    "location": "Kedarnath, Uttarakhand",
+    "basePriceHotelPerNight": 2500,
+    "basePriceCabPerKm": 20,
+    "peakMonths": [4, 5, 6],
+    "offMonths": [11, 12, 1, 2],
+    "notes": "Pilgrimage site; accessible in summer only."
+  },
+  {
+    "location": "Rishikesh, Uttarakhand",
+    "basePriceHotelPerNight": 2100,
+    "basePriceCabPerKm": 15,
+    "peakMonths": [3, 4, 5, 10],
+    "offMonths": [7, 8, 9],
+    "notes": "Yoga and adventure capital; summer and autumn peaks."
+  },
+  {
+    "location": "Haridwar, Uttarakhand",
+    "basePriceHotelPerNight": 1900,
+    "basePriceCabPerKm": 14,
+    "peakMonths": [3, 4, 5, 10, 11],
+    "offMonths": [7, 8, 9],
+    "notes": "Religious hub; festivals attract large crowds."
+  },
+  {
+    "location": "Varanasi, Uttar Pradesh",
+    "basePriceHotelPerNight": 1800,
+    "basePriceCabPerKm": 13,
+    "peakMonths": [10, 11, 12, 1],
+    "offMonths": [5, 6, 7],
+    "notes": "Spiritual city; better during winter months."
+  },
+  {
+    "location": "Agra, Uttar Pradesh",
+    "basePriceHotelPerNight": 2000,
+    "basePriceCabPerKm": 14,
+    "peakMonths": [10, 11, 12, 1],
+    "offMonths": [6, 7, 8],
+    "notes": "Home to Taj Mahal; winter is tourist season."
+  },
+  {
+    "location": "Udaipur, Rajasthan",
+    "basePriceHotelPerNight": 2300,
+    "basePriceCabPerKm": 16,
+    "peakMonths": [10, 11, 12, 1],
+    "offMonths": [5, 6, 7],
+    "notes": "City of lakes; winter season is ideal for travel."
+  },
+  {
+    "location": "Mount Abu, Rajasthan",
+    "basePriceHotelPerNight": 2200,
+    "basePriceCabPerKm": 17,
+    "peakMonths": [4, 5, 6],
+    "offMonths": [7, 8, 9],
+    "notes": "Only hill station of Rajasthan; summer peak."
+  },
+  {
+    "location": "Mysore, Karnataka",
+    "basePriceHotelPerNight": 2100,
+    "basePriceCabPerKm": 15,
+    "peakMonths": [9, 10, 11, 12],
+    "offMonths": [4, 5, 6],
+    "notes": "Cultural city; Dasara festival attracts visitors."
+  },
+  {
+    "location": "Coorg, Karnataka",
+    "basePriceHotelPerNight": 2300,
+    "basePriceCabPerKm": 17,
+    "peakMonths": [10, 11, 12],
+    "offMonths": [6, 7, 8],
+    "notes": "Coffee plantations; cool weather in winter."
+  },
+  {
+    "location": "Munnar, Kerala",
+    "basePriceHotelPerNight": 2400,
+    "basePriceCabPerKm": 17,
+    "peakMonths": [11, 12, 1],
+    "offMonths": [6, 7, 8],
+    "notes": "Tea estates; best after monsoon."
+  },
+  {
+    "location": "Alleppey, Kerala",
+    "basePriceHotelPerNight": 2600,
+    "basePriceCabPerKm": 18,
+    "peakMonths": [10, 11, 12, 1],
+    "offMonths": [6, 7, 8],
+    "notes": "Backwaters; ideal for winter cruises."
+  },
+  {
+    "location": "Kanyakumari, Tamil Nadu",
+    "basePriceHotelPerNight": 2100,
+    "basePriceCabPerKm": 15,
+    "peakMonths": [11, 12, 1, 2],
+    "offMonths": [6, 7, 8],
+    "notes": "Southern tip of India; good all year."
+  },
+  {
+    "location": "Andaman & Nicobar Islands",
+    "basePriceHotelPerNight": 4500,
+    "basePriceCabPerKm": 30,
+    "peakMonths": [12, 1, 2, 3],
+    "offMonths": [6, 7, 8],
+    "notes": "Tropical island destination; winter preferred."
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Prince joshi",
+    "email": "sumitjoshi.me007@gmail.com",
+    "password": "$2b$10$J7Z1p.m8gJ7aCKn1N8UaBu1vNrm/Jv/weajyPOxV/GfZlNjt.7f7O",
+    "surakshaId": "SS-416857",
+    "createdAt": "2025-10-28T09:21:36.198Z"
+  },
+  {
+    "name": "priyanshu mahar",
+    "email": "priyanshumahar215@gmail.com",
+    "password": "$2b$10$hGNB3vDQn56BdWaHur4KlOvjcmDIVtBwB0eh9KHh6SPpada9OkKk.",
+    "surakshaId": "SS-972976",
+    "createdAt": "2025-10-28T09:23:29.712Z"
+  },
+  {
+    "name": "sumit joshi",
+    "email": "bestpackage@gmail.com",
+    "password": "$2b$10$K1IFJzTKpxjTjXd5OTWBsOXBYnGk8kfn5P0wPCQc3ILoRXVVpH8IK",
+    "surakshaId": "SS-995723",
+    "createdAt": "2025-10-28T09:41:26.856Z"
+  }
+]

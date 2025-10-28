@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suraksha Setu — Admin Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-[Inter] min-h-screen flex items-center justify-center">
+
+  <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-lg border border-gray-200">
+    <h1 class="text-2xl font-bold text-center mb-2">Suraksha Setu — Admin Panel</h1>
+    <p class="text-center text-gray-500 text-sm mb-6">Secure access for government officials only</p>
+
+    <!-- LOGIN SECTION -->
+    <div id="loginSection">
+      <h2 class="text-lg font-semibold mb-3">Admin Login</h2>
+
+      <label class="text-sm text-gray-600">Username</label>
+      <input id="adminUser" value="govadmin"
+        class="w-full mb-3 mt-1 p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 outline-none" />
+
+      <label class="text-sm text-gray-600">Password</label>
+      <input id="adminPass" type="password"
+        class="w-full mb-4 mt-1 p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 outline-none" />
+
+      <button id="btnLogin"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-md transition">Login</button>
+
+      <button id="btnLogout"
+        class="w-full mt-3 bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-md transition hidden">Logout</button>
+
+      <p id="loginMsg" class="mt-2 text-center text-sm"></p>
+    </div>
+
+    <hr class="my-6 border-gray-200" />
+
+    <!-- VERIFY SECTION -->
+    <div>
+      <h2 class="text-lg font-semibold mb-3">Verify Suraksha ID</h2>
+      <div class="flex gap-2">
+        <input id="searchId" placeholder="Enter Suraksha ID (e.g. SS-20251028-XXXXX)"
+          class="flex-1 p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-400 outline-none" />
+        <button id="btnVerify"
+          class="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-md transition">Verify</button>
+      </div>
+
+      <p id="verifyMsg" class="mt-2 text-sm text-red-500"></p>
+
+      <pre id="result"
+        class="bg-gray-900 text-green-300 rounded-md p-3 mt-3 text-sm overflow-auto max-h-64">No result yet.</pre>
+    </div>
+
+    <p class="text-center text-xs text-gray-400 mt-6">© 2025 Suraksha Setu | Govt of India</p>
+  </div>
+
+  <script>
+    const BASE = "http://localhost:3000";
+
+    function setToken(t) {
+      if (!t) {
+        sessionStorage.removeItem("adminToken");
+        document.getElementById("btnLogout").classList.add("hidden");
+      } else {
+        sessionStorage.setItem("adminToken", t);
+        document.getElementById("btnLogout").classList.remove("hidden");
+      }
+    }
+
+    function getToken() {
+      return sessionStorage.getItem("adminToken");
+    }
+
+    // LOGIN
+    document.getElementById("btnLogin").addEventListener("click", async () => {
+      const msg = document.getElementById("loginMsg");
+      msg.textContent = "";
+      msg.style.color = "crimson";
+
+      const username = document.getElementById("adminUser").value.trim();
+      const password = document.getElementById("adminPass").value.trim();
+
+      if (!username || !password) {
+        msg.textContent = "⚠️ Enter credentials";
+        return;
+      }
+
+      try {
+        const r = await fetch(`${BASE}/api/auth/admin/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+        const d = await r.json();
+
+        if (!r.ok) {
+          msg.textContent = d.message || "Login failed ❌";
+          return;
+        }
+
+        setToken(d.token);
+        msg.style.color = "green";
+        msg.textContent = "✅ Login successful";
+      } catch (err) {
+        console.error(err);
+        msg.textContent = "Network error ⚠️";
+      }
+    });
+
+    // LOGOUT
+    document.getElementById("btnLogout").addEventListener("click", () => {
+      setToken(null);
+      document.getElementById("result").textContent = "Logged out.";
+      document.getElementById("loginMsg").textContent = "";
+    });
+
+    // VERIFY ID
+    document.getElementById("btnVerify").addEventListener("click", async () => {
+      const id = document.getElementById("searchId").value.trim();
+      const verifyMsg = document.getElementById("verifyMsg");
+      const result = document.getElementById("result");
+
+      verifyMsg.textContent = "";
+      if (!id) {
+        verifyMsg.textContent = "⚠️ Enter ID";
+        return;
+      }
+
+      const token = getToken();
+      if (!token) {
+        verifyMsg.textContent = "Please login first";
+        return;
+      }
+
+      try {
+        const r = await fetch(`${BASE}/api/verify/${encodeURIComponent(id)}`, {
+          headers: { Authorization: "Bearer " + token },
+        });
+        const d = await r.json();
+
+        if (!r.ok) {
+          result.textContent = JSON.stringify(d, null, 2);
+          if (r.status === 401 || r.status === 403) {
+            setToken(null);
+            verifyMsg.textContent = "Session expired — please login again";
+          } else {
+            verifyMsg.textContent = d.message || "Error";
+          }
+          return;
+        }
+
+        result.textContent = JSON.stringify(d, null, 2);
+        verifyMsg.style.color = "green";
+        verifyMsg.textContent = "✅ Verification successful";
+      } catch (e) {
+        console.error(e);
+        verifyMsg.textContent = "Network error ⚠️";
+      }
+    });
+
+    // Show logout if token already stored
+    if (getToken()) document.getElementById("btnLogout").classList.remove("hidden");
+  </script>
+</body>
+</html>

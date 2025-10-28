@@ -224,4 +224,3 @@ app.get("/", (req, res) => {
 // ---------------------- SERVER ----------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Suraksha Setu backend running on http://localhost:${PORT}`));
-
