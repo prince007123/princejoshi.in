@@ -10,6 +10,15 @@ import path from "path";
 import util from "util";
 import { fileURLToPath } from "url";
 
+export default function handler(req, res) {
+  if (req.method === "POST") {
+    return res.status(200).json({ message: "Login successful" });
+  } else {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+}
+
+
 dotenv.config();
 
 const app = express();
