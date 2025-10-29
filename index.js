@@ -10,14 +10,21 @@ import path from "path";
 import util from "util";
 import { fileURLToPath } from "url";
 
+// ---------------------- SETUP ----------------------
 dotenv.config();
 
 const app = express();
-app.use(cors({ origin: "*", methods: ["GET", "POST"], allowedHeaders: ["Content-Type", "Authorization"] }));
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 app.use(express.static("./"));
 
-// 🧩 Directory setup
+// Directory setup
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -46,16 +53,27 @@ function saveUsers(users) {
 app.post("/api/signup", async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password)
-    return res.status(400).json({ success: false, message: "All fields are required" });
+    return res
+      .status(400)
+      .json({ success: false, message: "All fields are required" });
 
   let users = loadUsers();
   const existing = users.find((u) => u.email === email);
-  if (existing) return res.status(400).json({ success: false, message: "Email already registered" });
+  if (existing)
+    return res
+      .status(400)
+      .json({ success: false, message: "Email already registered" });
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const surakshaId = "SS-" + Math.floor(100000 + Math.random() * 900000);
 
-  const newUser = { name, email, password: hashedPassword, surakshaId, createdAt: new Date() };
+  const newUser = {
+    name,
+    email,
+    password: hashedPassword,
+    surakshaId,
+    createdAt: new Date(),
+  };
   users.push(newUser);
   saveUsers(users);
 
@@ -63,11 +81,12 @@ app.post("/api/signup", async (req, res) => {
 });
 
 // ---------------------- LOGIN ----------------------
-// ---------------------- LOGIN (Fixed) ----------------------
 app.post("/api/login", async (req, res) => {
   const { emailOrId, password } = req.body;
   if (!emailOrId || !password)
-    return res.status(400).json({ success: false, message: "Email/ID and password required" });
+    return res
+      .status(400)
+      .json({ success: false, message: "Email/ID and password required" });
 
   const users = loadUsers();
   const user = users.find(
@@ -79,7 +98,9 @@ app.post("/api/login", async (req, res) => {
 
   const valid = await bcrypt.compare(password, user.password);
   if (!valid)
-    return res.status(401).json({ success: false, message: "Invalid password" });
+    return res
+      .status(401)
+      .json({ success: false, message: "Invalid password" });
 
   const token = jwt.sign(
     { email: user.email, surakshaId: user.surakshaId },
@@ -87,7 +108,6 @@ app.post("/api/login", async (req, res) => {
     { expiresIn: "2h" }
   );
 
-  // ✅ Always send JSON response
   res.json({
     success: true,
     message: "Login successful",
@@ -95,9 +115,6 @@ app.post("/api/login", async (req, res) => {
     surakshaId: user.surakshaId,
   });
 });
-
-
-
 
 // ---------------------- VERIFY TOKEN MIDDLEWARE ----------------------
 function authOnly(req, res, next) {
@@ -120,8 +137,13 @@ app.get("/api/dynamic-pricing/:location", async (req, res) => {
     const dataPath = path.join(__dirname, "locations-pricing.json");
     const jsonData = JSON.parse(fs.readFileSync(dataPath, "utf8"));
 
-    const location = jsonData.find((loc) => loc.location.toLowerCase() === locationName);
-    if (!location) return res.status(404).json({ success: false, message: "Location not found" });
+    const location = jsonData.find(
+      (loc) => loc.location.toLowerCase() === locationName
+    );
+    if (!location)
+      return res
+        .status(404)
+        .json({ success: false, message: "Location not found" });
 
     const month = new Date().getMonth();
     let hotelPrice = location.basePriceHotelPerNight;
@@ -145,7 +167,9 @@ app.get("/api/dynamic-pricing/:location", async (req, res) => {
       notes: location.notes,
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Error loading location data" });
+    res
+      .status(500)
+      .json({ success: false, message: "Error loading location data" });
   }
 });
 
@@ -181,7 +205,9 @@ function distanceMeters(lat1, lon1, lat2, lon2) {
   const dLon = toRad(lon2 - lon1);
   const a =
     Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -208,7 +234,9 @@ app.post("/api/location-report", authOnly, async (req, res) => {
       from: process.env.EMAIL,
       to: process.env.EMAIL,
       subject: `🚨 GeoFence Breach — ${req.user.surakshaId}`,
-      text: `User ${req.user.surakshaId} exited safe zone.\nDistance: ${Math.round(dist)}m`,
+      text: `User ${req.user.surakshaId} exited safe zone.\nDistance: ${Math.round(
+        dist
+      )}m`,
     };
     await transporter.sendMail(mailOptions);
   }
@@ -223,4 +251,6 @@ app.get("/", (req, res) => {
 
 // ---------------------- SERVER ----------------------
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Suraksha Setu backend running on http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`🚀 Suraksha Setu backend running on http://localhost:${PORT}`)
+);
