@@ -1,203 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tech Portfolio — Futurestick</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+<style>
+.safari-table{
+  width:100%;
+  border-collapse:collapse;
+  font-family:"Segoe UI",Arial,sans-serif;
+  margin:20px 0;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 4px 14px rgba(0,0,0,0.08);
+}
+.safari-table thead tr{
+  background:linear-gradient(90deg, #3b5a2b, #7b6a44);
+  color:#fff;
+}
+.safari-table th, 
+.safari-table td{
+  padding:14px 16px;
+  text-align:left;
+  font-size:15px;
+}
+.safari-table tbody tr:nth-child(even){
+  background:#f4f6f3;
+}
+.safari-table tbody tr:hover{
+  background:rgba(59,90,43,0.08);
+}
+.safari-table td.price{
+  font-weight:600;
+  color:#3b5a2b;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Orbitron', sans-serif;
-    }
+/* Mobile responsive */
+@media (max-width:768px){
+  .safari-table thead{display:none;}
+  .safari-table, 
+  .safari-table tbody, 
+  .safari-table tr, 
+  .safari-table td{display:block; width:100%;}
+  .safari-table tr{margin-bottom:12px; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.05);}
+  .safari-table td{padding:10px 14px; border:none; position:relative;}
+  .safari-table td::before{
+    content: attr(data-label);
+    font-weight:600;
+    color:#7b6a44;
+    display:block;
+    margin-bottom:4px;
+    font-size:13px;
+  }
+}
+</style>
 
-    body {
-      background: #0a0a0f;
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-    header {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 3rem;
-      color: cyan;
-      text-shadow: 0 0 10px cyan, 0 0 20px blue;
-    }
-
-    header h2 {
-      font-size: 1.5rem;
-      margin-top: 15px;
-      color: #ccc;
-    }
-
-    .typing {
-      color: magenta;
-      text-shadow: 0 0 5px magenta, 0 0 15px violet;
-      font-size: 1.2rem;
-      margin-top: 10px;
-      height: 25px;
-    }
-
-    section {
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    h3 {
-      font-size: 2rem;
-      margin-bottom: 30px;
-      color: cyan;
-      text-shadow: 0 0 10px cyan;
-    }
-
-    .skills, .projects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid cyan;
-      border-radius: 12px;
-      padding: 20px;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 0 20px cyan, 0 0 40px blue;
-    }
-
-    form input, form textarea, form button {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    form input, form textarea {
-      background: #111;
-      color: white;
-      border: 1px solid cyan;
-    }
-
-    form button {
-      background: cyan;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    form button:hover {
-      background: magenta;
-      color: white;
-    }
-
-    /* Cursor glow effect */
-    .cursor-glow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: rgba(0,255,255,0.7);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      mix-blend-mode: difference;
-      z-index: 9999;
-    }
-  </style>
-</head>
-<body>
-  <div class="cursor-glow"></div>
-
-  <header>
-    <h1>Hi, I'm Prince</h1>
-    <h2>Tech Enthusiast & Developer</h2>
-    <div class="typing"></div>
-  </header>
-
-  <section>
-    <h3>Skills</h3>
-    <div class="skills">
-      <div class="card">HTML</div>
-      <div class="card">CSS</div>
-      <div class="card">JavaScript</div>
-      <div class="card">Word Press</div>
-    </div>
-  </section>
-
-  <section>
-    <h3>Web Games</h3>
-    <div class="projects">
-  <a href="game.html"><div class="card">Project One</div></a>
-    </div>
-  </section>
-
-  <section>
-    <h3>Contact Me</h3>
-    <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea rows="5" placeholder="Your Message"></textarea>
-      <button type="submit">Send</button>
-    </form>
-  </section>
-
-  <script>
-    // Typing animation
-    const texts = ["Web Developer", "Tech Explorer", "UI/UX Learner", "Future Coder"];
-    let index = 0;
-    let charIndex = 0;
-    const typingDiv = document.querySelector(".typing");
-
-    function typeEffect() {
-      if (charIndex < texts[index].length) {
-        typingDiv.textContent += texts[index].charAt(charIndex);
-        charIndex++;
-        setTimeout(typeEffect, 100);
-      } else {
-        setTimeout(eraseEffect, 1500);
-      }
-    }
-
-    function eraseEffect() {
-      if (charIndex > 0) {
-        typingDiv.textContent = texts[index].substring(0, charIndex - 1);
-        charIndex--;
-        setTimeout(eraseEffect, 50);
-      } else {
-        index = (index + 1) % texts.length;
-        setTimeout(typeEffect, 200);
-      }
-    }
-
-    typeEffect();
-
-    // Cursor glow effect
-    const cursor = document.querySelector(".cursor-glow");
-    document.addEventListener("mousemove", (e) => {
-      cursor.style.left = e.pageX + "px";
-      cursor.style.top = e.pageY + "px";
-    });
-  </script>
-</body>
-</html>
-
+<table class="safari-table">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Indian Visitors (₹)</th>
+      <th>Foreign Visitors (₹)</th>
+      <th>Notes / Benefits</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="Category">Adults (18–60 yrs)</td>
+      <td data-label="Indian Visitors (₹)" class="price">500</td>
+      <td data-label="Foreign Visitors (₹)" class="price">1000</td>
+      <td data-label="Notes / Benefits">Standard entry with guided safari</td>
+    </tr>
+    <tr>
+      <td data-label="Category">Children (5–17 yrs)</td>
+      <td data-label="Indian Visitors (₹)" class="price">250</td>
+      <td data-label="Foreign Visitors (₹)" class="price">500</td>
+      <td data-label="Notes / Benefits">Half ticket, safari seat included</td>
+    </tr>
+    <tr>
+      <td data-label="Category">Senior Citizens (60+ yrs)</td>
+      <td data-label="Indian Visitors (₹)" class="price">300</td>
+      <td data-label="Foreign Visitors (₹)" class="price">600</td>
+      <td data-label="Notes / Benefits">Discounted rate, priority seating</td>
+    </tr>
+    <tr>
+      <td data-label="Category">Students (With ID Card)</td>
+      <td data-label="Indian Visitors (₹)" class="price">200</td>
+      <td data-label="Foreign Visitors (₹)" class="price">400</td>
+      <td data-label="Notes / Benefits">Concession with valid ID proof</td>
+    </tr>
+    <tr>
+      <td data-label="Category">Family Package (2+2)</td>
+      <td data-label="Indian Visitors (₹)" class="price">1500</td>
+      <td data-label="Foreign Visitors (₹)" class="price">3000</td>
+      <td data-label="Notes / Benefits">Includes 2 adults + 2 children</td>
+    </tr>
+    <tr>
+      <td data-label="Category">Jeep Safari (per person)</td>
+      <td data-label="Indian Visitors (₹)" class="price">800</td>
+      <td data-label="Foreign Visitors (₹)" class="price">1500</td>
+      <td data-label="Notes / Benefits">Open jeep guided ride</td>
+    </tr>
+    <tr>
+      <td data-label="Category">Luxury Safari (per person)</td>
+      <td data-label="Indian Visitors (₹)" class="price">1500</td>
+      <td data-label="Foreign Visitors (₹)" class="price">3000</td>
+      <td data-label="Notes / Benefits">AC jeep + binoculars + refreshments</td>
+    </tr>
+    <tr>
+      <td data-label="Category">Photography Pass</td>
+      <td data-label="Indian Visitors (₹)" class="price">300</td>
+      <td data-label="Foreign Visitors (₹)" class="price">500</td>
+      <td data-label="Notes / Benefits">For DSLR/Video cameras</td>
+    </tr>
+    <tr>
+      <td data-label="Category">VIP Pass</td>
+      <td data-label="Indian Visitors (₹)" class="price">5000</td>
+      <td data-label="Foreign Visitors (₹)" class="price">7000</td>
+      <td data-label="Notes / Benefits">Private jeep + personal guide + refreshments</td>
+    </tr>
+  </tbody>
+</table>
