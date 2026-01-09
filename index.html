@@ -383,7 +383,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(10, 10, 10, 0.9);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(10px);
             z-index: 1000;
             padding: 1rem 2rem;
@@ -1016,16 +1016,12 @@
             box-shadow: 0 0 15px var(--electric-blue);
         }
 
-        /* Responsive */
-        @media (max-width: 1100px) {
+        /* ========== MOBILE RESPONSIVE STYLES ========== */
+        
+        /* Base Mobile Styles */
+        @media (max-width: 1200px) {
             .main-container {
-                flex-direction: column;
                 padding: 2rem;
-            }
-            
-            .photo-section {
-                height: auto;
-                margin-bottom: 3rem;
             }
             
             .photo-frame {
@@ -1040,10 +1036,54 @@
             .section {
                 padding: 6rem 2rem;
             }
+        }
+
+        /* Tablet Styles */
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+                min-height: auto;
+                padding: 8rem 2rem 4rem;
+            }
+            
+            .photo-section {
+                height: auto;
+                margin-bottom: 3rem;
+                transform: translateX(0);
+                animation: fadeIn 1s ease forwards 0.5s;
+            }
+            
+            .photo-frame {
+                width: 320px;
+                height: 420px;
+                transform: perspective(1000px) rotateY(0deg);
+            }
+            
+            .text-section {
+                text-align: center;
+                width: 100%;
+            }
+            
+            .tagline-container {
+                height: 100px;
+            }
+            
+            .tagline {
+                font-size: 1.8rem;
+            }
             
             .about-content,
             .contact-container {
                 grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .skills-container {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            
+            .projects-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             }
             
             .timeline::after {
@@ -1061,34 +1101,362 @@
             }
         }
 
+        /* Mobile Styles */
         @media (max-width: 768px) {
             .main-container {
+                padding: 6rem 1.5rem 3rem;
+            }
+            
+            .nav-container {
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .nav-logo {
+                font-size: 1.5rem;
+            }
+            
+            .nav-links {
+                display: none; /* Will show mobile menu */
+            }
+            
+            /* Mobile Menu */
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: var(--electric-blue);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+            
+            .mobile-menu {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 10, 10, 0.98);
+                backdrop-filter: blur(15px);
                 padding: 1rem;
+                display: none;
+                flex-direction: column;
+                gap: 1rem;
+                border-bottom: 2px solid var(--electric-blue);
+                z-index: 999;
+            }
+            
+            .mobile-menu.active {
+                display: flex;
+            }
+            
+            .mobile-nav-link {
+                padding: 1rem;
+                color: white;
+                text-decoration: none;
+                font-family: 'Montserrat', sans-serif;
+                border-bottom: 1px solid rgba(0, 238, 255, 0.2);
+                transition: all 0.3s ease;
+            }
+            
+            .mobile-nav-link:hover {
+                color: var(--electric-blue);
+                padding-left: 1.5rem;
             }
             
             .photo-frame {
-                width: 300px;
-                height: 400px;
+                width: 280px;
+                height: 380px;
             }
             
             .name-title {
                 font-size: 3.5rem;
+                letter-spacing: 3px;
+            }
+            
+            .intro-line {
+                font-size: 1.2rem;
+            }
+            
+            .tagline-container {
+                height: 90px;
+                margin: 2rem 0;
             }
             
             .tagline {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
             }
             
             .stats-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+                margin-top: 1.5rem;
+            }
+            
+            .stat-box {
+                padding: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 4rem 1.5rem;
             }
             
             .section-title {
                 font-size: 2.5rem;
+                margin-bottom: 2rem;
             }
             
-            .nav-links {
+            .section-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .about-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .about-stat {
+                padding: 1.5rem;
+            }
+            
+            .tech-stack {
+                gap: 0.8rem;
+            }
+            
+            .tech-chip {
+                padding: 0.4rem 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .skills-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .skill-category {
+                padding: 1.5rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .project-card {
+                margin-bottom: 1rem;
+            }
+            
+            .project-img {
+                height: 180px;
+                font-size: 2.5rem;
+            }
+            
+            .timeline-content {
+                padding: 1.5rem;
+            }
+            
+            .timeline-title {
+                font-size: 1.3rem;
+            }
+            
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .contact-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            
+            .contact-form {
+                padding: 1.5rem;
+            }
+            
+            .form-group input,
+            .form-group textarea {
+                padding: 0.8rem;
+            }
+            
+            .submit-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .footer {
+                padding: 2rem 1.5rem;
+            }
+            
+            .footer-logo {
+                font-size: 1.8rem;
+            }
+            
+            .social-links {
+                gap: 1rem;
+            }
+            
+            .social-link {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+            
+            .audio-toggle {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 1.2rem;
+            }
+            
+            .scroll-indicator {
                 display: none;
+            }
+            
+            .custom-cursor {
+                display: none;
+            }
+        }
+
+        /* Small Mobile Styles */
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 5rem 1rem 2rem;
+            }
+            
+            .photo-frame {
+                width: 250px;
+                height: 320px;
+            }
+            
+            .name-title {
+                font-size: 2.8rem;
+                letter-spacing: 2px;
+            }
+            
+            .intro-line {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+            
+            .tagline-container {
+                height: 80px;
+                margin: 1.5rem 0;
+            }
+            
+            .tagline {
+                font-size: 1.3rem;
+            }
+            
+            .section {
+                padding: 3rem 1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .section-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .about-text {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .tech-chip {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.75rem;
+            }
+            
+            .project-img {
+                height: 150px;
+                font-size: 2rem;
+            }
+            
+            .project-title {
+                font-size: 1.3rem;
+            }
+            
+            .project-desc {
+                font-size: 0.9rem;
+            }
+            
+            .timeline-item {
+                padding-left: 50px;
+                padding-right: 15px;
+                margin-bottom: 2rem;
+            }
+            
+            .timeline-content {
+                padding: 1rem;
+            }
+            
+            .timeline-title {
+                font-size: 1.2rem;
+            }
+            
+            .timeline-desc {
+                font-size: 0.9rem;
+            }
+            
+            .contact-icon {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .contact-text h3 {
+                font-size: 1.1rem;
+            }
+            
+            .footer {
+                padding: 1.5rem 1rem;
+            }
+            
+            .footer-logo {
+                font-size: 1.6rem;
+            }
+            
+            .footer-text {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Landscape Mode */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .main-container {
+                min-height: auto;
+                padding-top: 8rem;
+                padding-bottom: 4rem;
+            }
+            
+            .photo-section {
+                height: 60vh;
+            }
+            
+            .photo-frame {
+                width: 250px;
+                height: 300px;
+            }
+            
+            .tagline-container {
+                height: 70px;
+                margin: 1rem 0;
+            }
+            
+            .tagline {
+                font-size: 1.5rem;
+            }
+            
+            .stats-grid {
+                margin-top: 1rem;
             }
         }
     </style>
@@ -1117,7 +1485,21 @@
             <a href="#experience" class="nav-link">Experience</a>
             <a href="#contact" class="nav-link">Contact</a>
         </div>
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
     </nav>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#home" class="mobile-nav-link">Home</a>
+        <a href="#about" class="mobile-nav-link">About</a>
+        <a href="#skills" class="mobile-nav-link">Skills</a>
+        <a href="#projects" class="mobile-nav-link">Projects</a>
+        <a href="#experience" class="mobile-nav-link">Experience</a>
+        <a href="#contact" class="mobile-nav-link">Contact</a>
+    </div>
     
     <!-- Scroll Indicator -->
     <div class="scroll-indicator" id="scrollIndicator">
@@ -1174,515 +1556,499 @@
                 </div>
             </div>
         </section>
-      <!-- About Section -->
-<section id="about" class="section">
-    <h2 class="section-title">About Me</h2>
-    <p class="section-subtitle">
-        BCA student focused on building strong foundations in Python and real-world problem solving.
-    </p>
-    
-    <div class="about-content">
-        <div class="about-text">
-            <p>
-                I'm a Bachelor of Computer Applications (BCA) student with a strong interest in Python programming and software development. 
-                I focus on writing clean, logical, and well-structured code rather than rushing behind buzzwords.
-            </p>
-
-            <p>
-                As part of my academic and self-learning journey, I have worked extensively with Python fundamentals, 
-                including data types, control flow, functions, file handling, exception handling, and object-oriented programming.
-            </p>
-
-            <p>
-                I enjoy converting concepts into working programs — whether it's file-based applications, 
-                regex-driven text processing, basic GUI apps using Tkinter, or database-connected Python projects.
-                My goal is to grow into a skilled software developer with a strong core, not shortcuts.
+        
+        <!-- About Section -->
+        <section id="about" class="section">
+            <h2 class="section-title">About Me</h2>
+            <p class="section-subtitle">
+                BCA student focused on building strong foundations in Python and real-world problem solving.
             </p>
             
-            <div class="tech-stack">
-                <span class="tech-chip">Python</span>
-                <span class="tech-chip">OOP in Python</span>
-                <span class="tech-chip">File Handling</span>
-                <span class="tech-chip">Regular Expressions</span>
-                <span class="tech-chip">Tkinter</span>
-                <span class="tech-chip">MySQL</span>
-                <span class="tech-chip">HTML</span>
-                <span class="tech-chip">CSS</span>
-                <span class="tech-chip">Git</span>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        I'm a Bachelor of Computer Applications (BCA) student with a strong interest in Python programming and software development. 
+                        I focus on writing clean, logical, and well-structured code rather than rushing behind buzzwords.
+                    </p>
+
+                    <p>
+                        As part of my academic and self-learning journey, I have worked extensively with Python fundamentals, 
+                        including data types, control flow, functions, file handling, exception handling, and object-oriented programming.
+                    </p>
+
+                    <p>
+                        I enjoy converting concepts into working programs — whether it's file-based applications, 
+                        regex-driven text processing, basic GUI apps using Tkinter, or database-connected Python projects.
+                        My goal is to grow into a skilled software developer with a strong core, not shortcuts.
+                    </p>
+                    
+                    <div class="tech-stack">
+                        <span class="tech-chip">Python</span>
+                        <span class="tech-chip">OOP in Python</span>
+                        <span class="tech-chip">File Handling</span>
+                        <span class="tech-chip">Regular Expressions</span>
+                        <span class="tech-chip">Tkinter</span>
+                        <span class="tech-chip">MySQL</span>
+                        <span class="tech-chip">HTML</span>
+                        <span class="tech-chip">CSS</span>
+                        <span class="tech-chip">Git</span>
+                    </div>
+                </div>
+                
+                <div class="about-stats">
+                    <div class="about-stat">
+                        <div class="stat-number">BCA</div>
+                        <div class="stat-label">Undergraduate Student</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="stat-number">Python</div>
+                        <div class="stat-label">Primary Language</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="stat-number">Core</div>
+                        <div class="stat-label">Strong Fundamentals</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="stat-number">Learning</div>
+                        <div class="stat-label">Consistent Growth</div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
         
-        <div class="about-stats">
-            <div class="about-stat">
-                <div class="stat-number">BCA</div>
-                <div class="stat-label">Undergraduate Student</div>
-            </div>
-            <div class="about-stat">
-                <div class="stat-number">Python</div>
-                <div class="stat-label">Primary Language</div>
-            </div>
-            <div class="about-stat">
-                <div class="stat-number">Core</div>
-                <div class="stat-label">Strong Fundamentals</div>
-            </div>
-            <div class="about-stat">
-                <div class="stat-number">Learning</div>
-                <div class="stat-label">Consistent Growth</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-     <!-- Skills Section -->
-<section id="skills" class="section">
-    <h2 class="section-title">Technical Skills</h2>
-    <p class="section-subtitle">
-        Technologies I actively use and continuously improve through practice and projects.
-    </p>
-    
-    <div class="skills-container">
-
-        <!-- Programming & Core -->
-        <div class="skill-category">
-            <h3 class="skill-category-title"><i class="fas fa-laptop-code"></i> Programming</h3>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>Python</span>
-                    <span>75%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="75"></div>
-                </div>
-            </div>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>C Programming</span>
-                    <span>65%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="65"></div>
-                </div>
-            </div>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>Java (OOP Basics)</span>
-                    <span>60%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="60"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Web Technologies -->
-        <div class="skill-category">
-            <h3 class="skill-category-title"><i class="fas fa-code"></i> Web Technologies</h3>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>HTML5</span>
-                    <span>80%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="80"></div>
-                </div>
-            </div>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>CSS3</span>
-                    <span>75%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="75"></div>
-                </div>
-            </div>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>JavaScript (Basics)</span>
-                    <span>60%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="60"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Python Specialization -->
-        <div class="skill-category">
-            <h3 class="skill-category-title"><i class="fas fa-python"></i> Python Specialization</h3>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>OOP in Python</span>
-                    <span>70%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="70"></div>
-                </div>
-            </div>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>File Handling & Exceptions</span>
-                    <span>75%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="75"></div>
-                </div>
-            </div>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>Regular Expressions</span>
-                    <span>65%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="65"></div>
-                </div>
-            </div>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>Tkinter (GUI)</span>
-                    <span>60%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="60"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tools & Databases -->
-        <div class="skill-category">
-            <h3 class="skill-category-title"><i class="fas fa-database"></i> Tools & Databases</h3>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>MySQL</span>
-                    <span>65%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="65"></div>
-                </div>
-            </div>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>Git & GitHub</span>
-                    <span>70%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="70"></div>
-                </div>
-            </div>
-
-            <div class="skill-item">
-                <div class="skill-name">
-                    <span>Linux (Ubuntu)</span>
-                    <span>60%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" data-width="60"></div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-        
-      <!-- Projects Section -->
-<section id="projects" class="section">
-    <h2 class="section-title">Projects</h2>
-    <p class="section-subtitle">
-        Real projects built through hands-on learning, collaboration, and experimentation.
-    </p>
-    
-    <div class="projects-grid">
-
-        <!-- Project 1 -->
-        <div class="project-card">
-            <div class="project-img">
-                <i class="fas fa-question-circle"></i>
-            </div>
-            <div class="project-content">
-                <h3 class="project-title">Multiplayer Quiz App</h3>
-                <p class="project-desc">
-                    A real-time multiplayer quiz application built using React.js where multiple users can join,
-                    answer questions simultaneously, and view live scores.
-                </p>
-                <div class="project-tech">
-                    <span>React.js</span>
-                    <span>JavaScript</span>
-                    <span>HTML</span>
-                    <span>CSS</span>
-                </div>
-                <div class="project-links">
-                    <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 2 -->
-        <div class="project-card">
-            <div class="project-img">
-                <i class="fas fa-headphones"></i>
-            </div>
-            <div class="project-content">
-                <h3 class="project-title">8D Audio Experience (Python)</h3>
-                <p class="project-desc">
-                    A Python-based audio processing project that converts normal audio into an 8D surround sound
-                    experience using channel panning and audio effects.
-                </p>
-                <div class="project-tech">
-                    <span>Python</span>
-                    <span>Audio Processing</span>
-                    <span>Pydub</span>
-                </div>
-                <div class="project-links">
-                    <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 3 -->
-        <div class="project-card">
-            <div class="project-img">
-                <i class="fas fa-hand-paper"></i>
-            </div>
-            <div class="project-content">
-                <h3 class="project-title">Hand Gesture Volume Controller</h3>
-                <p class="project-desc">
-                    A computer vision project that controls system volume using hand gestures captured through a webcam.
-                    Built to explore real-time image processing and hardware interaction.
-                </p>
-                <div class="project-tech">
-                    <span>Python</span>
-                    <span>OpenCV</span>
-                    <span>MediaPipe</span>
-                </div>
-                <div class="project-links">
-                    <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 4 -->
-        
-
-    </div>
-</section>
-
-        
-<!-- Experience Section -->
-<section id="experience" class="section">
-    <h2 class="section-title">Work Experience</h2>
-    <p class="section-subtitle">
-        Hands-on experience through real projects, freelancing, and academic development work.
-    </p>
-    
-    <div class="timeline">
-
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <div class="timeline-date">2024 - Present</div>
-                <h3 class="timeline-title">Web Developer – bestpackage.in</h3>
-                <p class="timeline-desc">
-                    Actively working on the bestpackage.in website, handling frontend development,
-                    layout improvements, content updates, and feature enhancements.
-                    Focused on improving user experience, responsiveness, and overall site structure.
-                </p>
-            </div>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <div class="timeline-date">2023 - Present</div>
-                <h3 class="timeline-title">WordPress Developer</h3>
-                <p class="timeline-desc">
-                    Worked as a WordPress developer on multiple client and personal projects.
-                    Customized themes, built responsive pages, optimized performance,
-                    and handled basic SEO and plugin integrations.
-                </p>
-            </div>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <div class="timeline-date">2022 - Present</div>
-                <h3 class="timeline-title">BCA Student & Python Developer</h3>
-                <p class="timeline-desc">
-                    Pursuing BCA while actively building Python-based projects.
-                    Worked on applications involving file handling, regular expressions,
-                    GUI development using Tkinter, audio processing, and computer vision concepts.
-                </p>
-            </div>
-        </div>
-        
-        <div class="timeline-item">
-            <div class="timeline-content">
-                <div class="timeline-date">2022 - 2023</div>
-                <h3 class="timeline-title">Frontend Developer (Learning & Practice)</h3>
-                <p class="timeline-desc">
-                    Built responsive websites using HTML, CSS, and JavaScript.
-                    Developed interactive UI components and a multiplayer quiz application using React.js
-                    as part of hands-on learning and practice.
-                </p>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-       <!-- Contact Section -->
-<section id="contact" class="section">
-    <h2 class="section-title">Get In Touch</h2>
-    <p class="section-subtitle">
-        Have an idea, project, or collaboration in mind? Let’s talk.
-    </p>
-    
-    <div class="contact-container">
-        <div class="contact-info">
-
-            <div class="contact-item">
-                <div class="contact-icon">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <div class="contact-text">
-                    <h3>Email</h3>
-                    <p>uk05065020524@gmail.com</p>
-                </div>
-            </div>
+        <!-- Skills Section -->
+        <section id="skills" class="section">
+            <h2 class="section-title">Technical Skills</h2>
+            <p class="section-subtitle">
+                Technologies I actively use and continuously improve through practice and projects.
+            </p>
             
-            <div class="contact-item">
-                <div class="contact-icon">
-                    <i class="fas fa-phone"></i>
+            <div class="skills-container">
+
+                <!-- Programming & Core -->
+                <div class="skill-category">
+                    <h3 class="skill-category-title"><i class="fas fa-laptop-code"></i> Programming</h3>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Python</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="75"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>C Programming</span>
+                            <span>65%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="65"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Java (OOP Basics)</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="60"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="contact-text">
-                    <h3>Phone</h3>
-                    <p>+91 7668187737</p>
+
+                <!-- Web Technologies -->
+                <div class="skill-category">
+                    <h3 class="skill-category-title"><i class="fas fa-code"></i> Web Technologies</h3>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>HTML5</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>CSS3</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="75"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>JavaScript (Basics)</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="60"></div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Python Specialization -->
+                <div class="skill-category">
+                    <h3 class="skill-category-title"><i class="fas fa-python"></i> Python Specialization</h3>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>OOP in Python</span>
+                            <span>70%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="70"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>File Handling & Exceptions</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="75"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Regular Expressions</span>
+                            <span>65%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="65"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Tkinter (GUI)</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="60"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools & Databases -->
+                <div class="skill-category">
+                    <h3 class="skill-category-title"><i class="fas fa-database"></i> Tools & Databases</h3>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>MySQL</span>
+                            <span>65%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="65"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Git & GitHub</span>
+                            <span>70%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="70"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Linux (Ubuntu)</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="60"></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </section>
+        
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <h2 class="section-title">Projects</h2>
+            <p class="section-subtitle">
+                Real projects built through hands-on learning, collaboration, and experimentation.
+            </p>
             
-            <div class="contact-item">
-                <div class="contact-icon">
-                    <i class="fas fa-map-marker-alt"></i>
+            <div class="projects-grid">
+
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <div class="project-img">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Multiplayer Quiz App</h3>
+                        <p class="project-desc">
+                            A real-time multiplayer quiz application built using React.js where multiple users can join,
+                            answer questions simultaneously, and view live scores.
+                        </p>
+                        <div class="project-tech">
+                            <span>React.js</span>
+                            <span>JavaScript</span>
+                            <span>HTML</span>
+                            <span>CSS</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="contact-text">
-                    <h3>Location</h3>
-                    <p>Champawat, Uttarakhand, India</p>
+
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-img">
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">8D Audio Experience (Python)</h3>
+                        <p class="project-desc">
+                            A Python-based audio processing project that converts normal audio into an 8D surround sound
+                            experience using channel panning and audio effects.
+                        </p>
+                        <div class="project-tech">
+                            <span>Python</span>
+                            <span>Audio Processing</span>
+                            <span>Pydub</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <div class="project-img">
+                        <i class="fas fa-hand-paper"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Hand Gesture Volume Controller</h3>
+                        <p class="project-desc">
+                            A computer vision project that controls system volume using hand gestures captured through a webcam.
+                            Built to explore real-time image processing and hardware interaction.
+                        </p>
+                        <div class="project-tech">
+                            <span>Python</span>
+                            <span>OpenCV</span>
+                            <span>MediaPipe</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </section>
+        
+        <!-- Experience Section -->
+        <section id="experience" class="section">
+            <h2 class="section-title">Work Experience</h2>
+            <p class="section-subtitle">
+                Hands-on experience through real projects, freelancing, and academic development work.
+            </p>
             
-            <div class="contact-item">
-                <div class="contact-icon">
-                    <i class="fas fa-clock"></i>
+            <div class="timeline">
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024 - Present</div>
+                        <h3 class="timeline-title">Web Developer – bestpackage.in</h3>
+                        <p class="timeline-desc">
+                            Actively working on the bestpackage.in website, handling frontend development,
+                            layout improvements, content updates, and feature enhancements.
+                            Focused on improving user experience, responsiveness, and overall site structure.
+                        </p>
+                    </div>
                 </div>
-                <div class="contact-text">
-                    <h3>Availability</h3>
-                    <p>Open to internships, freelance & learning opportunities</p>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2023 - Present</div>
+                        <h3 class="timeline-title">WordPress Developer</h3>
+                        <p class="timeline-desc">
+                            Worked as a WordPress developer on multiple client and personal projects.
+                            Customized themes, built responsive pages, optimized performance,
+                            and handled basic SEO and plugin integrations.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2022 - Present</div>
+                        <h3 class="timeline-title">BCA Student & Python Developer</h3>
+                        <p class="timeline-desc">
+                            Pursuing BCA while actively building Python-based projects.
+                            Worked on applications involving file handling, regular expressions,
+                            GUI development using Tkinter, audio processing, and computer vision concepts.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2022 - 2023</div>
+                        <h3 class="timeline-title">Frontend Developer (Learning & Practice)</h3>
+                        <p class="timeline-desc">
+                            Built responsive websites using HTML, CSS, and JavaScript.
+                            Developed interactive UI components and a multiplayer quiz application using React.js
+                            as part of hands-on learning and practice.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle">
+                Have an idea, project, or collaboration in mind? Let's talk.
+            </p>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Email</h3>
+                            <p>uk05065020524@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Phone</h3>
+                            <p>+91 7668187737</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Location</h3>
+                            <p>Champawat, Uttarakhand, India</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Availability</h3>
+                            <p>Open to internships, freelance & learning opportunities</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="contact-form">
+                    <form 
+                        id="contactForm"
+                        action="https://formsubmit.co/uk05065020524@gmail.com"
+                        method="POST"
+                    >
+
+                        <!-- FormSubmit hidden configs -->
+                        <input type="hidden" name="_subject" value="New Contact Message from Portfolio">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_next" value="http://127.0.0.1:5500/">
+
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" name="name" id="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" name="email" id="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" name="subject" id="subject" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Your Message</label>
+                            <textarea name="message" id="message" rows="5" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
                 </div>
             </div>
-        </div>
+        </section>
         
-        <!-- Contact Form -->
-        <div class="contact-form">
-            <form 
-                id="contactForm"
-                action="https://formsubmit.co/uk05065020524@gmail.com"
-                method="POST"
-            >
-
-                <!-- FormSubmit hidden configs -->
-                <input type="hidden" name="_subject" value="New Contact Message from Portfolio">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_next" value="http://127.0.0.1:5500/">
-
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" name="name" id="name" required>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">PRINCE</div>
+                <p class="footer-text">
+                    Learning, building, and improving every day — one project at a time.
+                    Let's connect and grow together.
+                </p>
+                
+                <div class="social-links">
+                    <a href="https://github.com/prince007123" target="_blank" class="social-link" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/prince-joshi-b60a2335a/" target="_blank" class="social-link" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://www.instagram.com/_._prince_007_._/" target="_blank" class="social-link" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
                 </div>
                 
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" name="email" id="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" name="subject" id="subject" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="message">Your Message</label>
-                    <textarea name="message" id="message" rows="5" required></textarea>
-                </div>
-                
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-paper-plane"></i> Send Message
-                </button>
-            </form>
-        </div>
+                <p class="copyright">
+                    © 2026 Prince Joshi. All rights reserved.
+                    | Built with <i class="fas fa-heart" style="color: var(--neon-pink);"></i> and clean code
+                </p>
+            </div>
+        </footer>
     </div>
-</section>
-
-        
-       <!-- Footer -->
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-logo">PRINCE</div>
-        <p class="footer-text">
-            Learning, building, and improving every day — one project at a time.
-            Let’s connect and grow together.
-        </p>
-        
-        <div class="social-links">
-            <a href="https://github.com/prince007123" target="_blank" class="social-link" aria-label="GitHub">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/prince-joshi-b60a2335a/" target="_blank" class="social-link" aria-label="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://www.instagram.com/_._prince_007_._/" target="_blank" class="social-link" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-        </div>
-        
-        <p class="copyright">
-            © 2026 Prince Joshi. All rights reserved.
-            | Built with <i class="fas fa-heart" style="color: var(--neon-pink);"></i> and clean code
-        </p>
-    </div>
-</footer>
-
     
     <!-- Audio Toggle -->
     <div class="audio-toggle" id="audioToggle">
         <i class="fas fa-volume-up"></i>
     </div>
     
-<!-- Background Audio -->
-<audio id="bgAudio" loop preload="auto">
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
-<script>
-    const audio = document.getElementById("bgAudio");
-
-    document.addEventListener("click", () => {
-        if (audio.paused) {
-            audio.volume = 0.3;
-            audio.play().catch(() => {});
-        }
-    }, { once: true });
-</script>
-
+    <!-- Background Audio -->
+    <audio id="bgAudio" loop preload="auto">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
     
     <script>
         // Initialize Variables
@@ -1690,6 +2056,8 @@
         const userPhoto = document.getElementById('user-photo');
         const introLine = document.getElementById('introLine');
         const surpriseContainer = document.getElementById('surpriseContainer');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
         
         // Photo names to try
         const photoNames = [
@@ -1709,8 +2077,48 @@
                 
                 // Start animations after photo loads
                 setTimeout(startAnimations, 500);
+                
+                // Initialize mobile menu
+                initMobileMenu();
             }, 1000);
         });
+        
+        // Initialize mobile menu
+        function initMobileMenu() {
+            mobileMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobileMenu.classList.toggle('active');
+                this.innerHTML = mobileMenu.classList.contains('active') ? 
+                    '<i class="fas fa-times"></i>' : 
+                    '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (mobileMenu.classList.contains('active') && 
+                    !mobileMenu.contains(e.target) && 
+                    !mobileMenuBtn.contains(e.target)) {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+            
+            // Close mobile menu when clicking a link
+            mobileMenu.querySelectorAll('.mobile-nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768 && mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        }
         
         // Find user photo
         function findUserPhoto() {
@@ -1834,7 +2242,7 @@
         // Create particle background
         function createParticles() {
             const particleBg = document.getElementById('particleBg');
-            const particleCount = 100;
+            const particleCount = window.innerWidth < 768 ? 50 : 100;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
@@ -1929,28 +2337,32 @@
             }, 2000);
         }
         
-        // Initialize custom cursor
+        // Initialize custom cursor (only for desktop)
         function initCursor() {
             const cursor = document.getElementById('cursor');
             
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
-            });
-            
-            const interactiveElements = document.querySelectorAll('a, button, .project-card, .skill-category, .stat-box, .timeline-content, .contact-item');
-            
-            interactiveElements.forEach(element => {
-                element.addEventListener('mouseenter', () => {
-                    cursor.style.transform = 'scale(1.8)';
-                    cursor.style.borderColor = '#ff00ff';
+            if (window.innerWidth > 768) {
+                document.addEventListener('mousemove', (e) => {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
                 });
                 
-                element.addEventListener('mouseleave', () => {
-                    cursor.style.transform = 'scale(1)';
-                    cursor.style.borderColor = '#00eeff';
+                const interactiveElements = document.querySelectorAll('a, button, .project-card, .skill-category, .stat-box, .timeline-content, .contact-item');
+                
+                interactiveElements.forEach(element => {
+                    element.addEventListener('mouseenter', () => {
+                        cursor.style.transform = 'scale(1.8)';
+                        cursor.style.borderColor = '#ff00ff';
+                    });
+                    
+                    element.addEventListener('mouseleave', () => {
+                        cursor.style.transform = 'scale(1)';
+                        cursor.style.borderColor = '#00eeff';
+                    });
                 });
-            });
+            } else {
+                cursor.style.display = 'none';
+            }
         }
         
         // Initialize audio
@@ -2074,13 +2486,17 @@
         
         // Interactive photo effect
         userPhoto.addEventListener('mouseenter', () => {
-            userPhoto.style.filter = 'grayscale(0%) contrast(130%) brightness(110%)';
-            userPhoto.style.transform = 'scale(1.05)';
+            if (window.innerWidth > 768) {
+                userPhoto.style.filter = 'grayscale(0%) contrast(130%) brightness(110%)';
+                userPhoto.style.transform = 'scale(1.05)';
+            }
         });
         
         userPhoto.addEventListener('mouseleave', () => {
-            userPhoto.style.filter = 'grayscale(30%) contrast(120%) brightness(100%)';
-            userPhoto.style.transform = 'scale(1)';
+            if (window.innerWidth > 768) {
+                userPhoto.style.filter = 'grayscale(30%) contrast(120%) brightness(100%)';
+                userPhoto.style.transform = 'scale(1)';
+            }
         });
         
         // Make photo clickable for surprise
@@ -2092,9 +2508,25 @@
         
         // Window resize handler
         window.addEventListener('resize', () => {
+            // Recreate particles for mobile/desktop
             const particleBg = document.getElementById('particleBg');
             particleBg.innerHTML = '';
             createParticles();
+            
+            // Show/hide cursor based on screen size
+            const cursor = document.getElementById('cursor');
+            if (window.innerWidth <= 768) {
+                cursor.style.display = 'none';
+            } else {
+                cursor.style.display = 'block';
+                initCursor(); // Reinitialize cursor
+            }
+            
+            // Reinitialize mobile menu on resize
+            if (window.innerWidth > 768 && mobileMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            }
         });
         
         // Initialize scroll animations on load
