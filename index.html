@@ -1,2538 +1,634 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRINCE | Full Stack Architect</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&family=Montserrat:wght@300;400;500;600;700;800&family=Source+Code+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --electric-blue: #00eeff;
-            --neon-pink: #ff00ff;
-            --cyber-yellow: #ffff00;
-            --matrix-green: #00ff41;
-            --dark-bg: #0a0a0a;
-            --card-bg: #121220;
-            --section-bg: #0f0f1a;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--dark-bg);
-            color: #fff;
-            overflow-x: hidden;
-        }
-
-        /* Existing Hero Section Styles (Same as before) */
-        .particle-bg {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -3;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--electric-blue);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--electric-blue);
-            animation: floatParticle linear infinite;
-        }
-
-        @keyframes floatParticle {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) translateX(var(--tx, 0));
-                opacity: 0;
-            }
-        }
-
-        .main-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 0 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .photo-section {
-            flex: 1;
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transform: translateX(-100%);
-            animation: slideInPhoto 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards 0.5s;
-        }
-
-        @keyframes slideInPhoto {
-            0% {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .photo-frame {
-            width: 400px;
-            height: 500px;
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 
-                0 0 60px rgba(0, 238, 255, 0.4),
-                0 0 100px rgba(255, 0, 255, 0.3),
-                inset 0 0 40px rgba(0, 0, 0, 0.8);
-            border: 2px solid transparent;
-            animation: borderGlow 3s infinite alternate;
-            transform: perspective(1000px) rotateY(-10deg);
-        }
-
-        @keyframes borderGlow {
-            0% {
-                border-color: var(--electric-blue);
-                box-shadow: 
-                    0 0 60px rgba(0, 238, 255, 0.4),
-                    0 0 100px rgba(255, 0, 255, 0.3);
-            }
-            100% {
-                border-color: var(--neon-pink);
-                box-shadow: 
-                    0 0 80px rgba(255, 0, 255, 0.5),
-                    0 0 120px rgba(0, 238, 255, 0.4);
-            }
-        }
-
-        #user-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(30%) contrast(120%) brightness(100%);
-            transition: all 0.5s ease;
-        }
-
-        .photo-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, 
-                rgba(0, 238, 255, 0.1) 0%,
-                transparent 50%,
-                rgba(255, 0, 255, 0.1) 100%);
-            pointer-events: none;
-            mix-blend-mode: overlay;
-        }
-
-        .photo-glitch {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            opacity: 0;
-            animation: photoGlitch 8s infinite;
-            mix-blend-mode: screen;
-        }
-
-        @keyframes photoGlitch {
-            0%, 100% { opacity: 0; transform: translate(0); }
-            1% { opacity: 0.1; transform: translate(-5px, 2px); }
-            2% { opacity: 0; transform: translate(3px, -1px); }
-            98% { opacity: 0; }
-            99% { opacity: 0.2; transform: translate(2px, 3px); }
-        }
-
-        .text-section {
-            flex: 1;
-            opacity: 0;
-            transform: translateY(50px);
-            animation: slideUpText 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards 1.5s;
-        }
-
-        @keyframes slideUpText {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .intro-line {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.5rem;
-            color: var(--electric-blue);
-            margin-bottom: 1rem;
-            letter-spacing: 3px;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards 2s;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        .name-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 6rem;
-            font-weight: 900;
-            line-height: 1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(90deg, #fff, var(--electric-blue));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            position: relative;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards 2.2s;
-        }
-
-        .tagline-container {
-            margin: 3rem 0;
-            position: relative;
-            height: 120px;
-            overflow: hidden;
-        }
-
-        .tagline {
-            position: absolute;
-            top: 0;
-            left: 0;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 600;
-            line-height: 1.3;
-            color: rgba(255, 255, 255, 0.9);
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .tagline.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .tagline .highlight {
-            color: var(--electric-blue);
-            position: relative;
-            display: inline-block;
-        }
-
-        .tagline .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--electric-blue);
-            box-shadow: 0 0 10px var(--electric-blue);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.5s ease;
-        }
-
-        .tagline.active .highlight::after {
-            transform: scaleX(1);
-            transition-delay: 0.3s;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-top: 2rem;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards 2.5s;
-        }
-
-        .stat-box {
-            background: rgba(18, 18, 32, 0.7);
-            border: 1px solid rgba(0, 238, 255, 0.2);
-            border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-box:hover {
-            transform: translateY(-5px);
-            border-color: var(--electric-blue);
-            box-shadow: 0 10px 25px rgba(0, 238, 255, 0.3);
-        }
-
-        .stat-number {
-            font-family: 'Orbitron', monospace;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--electric-blue);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .audio-toggle {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 238, 255, 0.1);
-            border: 2px solid var(--electric-blue);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--electric-blue);
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s ease;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards 3s;
-        }
-
-        .audio-toggle:hover {
-            background: rgba(0, 238, 255, 0.2);
-            transform: scale(1.1);
-            box-shadow: 0 0 30px var(--electric-blue);
-        }
-
-        .custom-cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--electric-blue);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.1s;
-        }
-
-        .loading-text {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: 'Orbitron', monospace;
-            font-size: 2rem;
-            color: var(--electric-blue);
-            letter-spacing: 4px;
-            z-index: 999;
-            opacity: 1;
-            transition: opacity 0.5s ease;
-        }
-
-        .loading-text.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* NEW SECTIONS START HERE (Below Hero) */
-        .portfolio-sections {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Navigation */
-        .nav-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(0, 238, 255, 0.2);
-            transform: translateY(-100%);
-            animation: slideDownNav 0.8s ease forwards 3s;
-        }
-
-        @keyframes slideDownNav {
-            to { transform: translateY(0); }
-        }
-
-        .nav-logo {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--electric-blue);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-link {
-            font-family: 'Montserrat', sans-serif;
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            position: relative;
-            padding: 0.5rem 0;
-            transition: color 0.3s ease;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--electric-blue);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--electric-blue);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* Scroll Indicator */
-        .scroll-indicator {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            z-index: 100;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards 3.5s;
-        }
-
-        .scroll-text {
-            font-family: 'Orbitron', monospace;
-            font-size: 0.9rem;
-            color: var(--electric-blue);
-            letter-spacing: 2px;
-        }
-
-        .scroll-arrow {
-            width: 30px;
-            height: 50px;
-            border: 2px solid var(--electric-blue);
-            border-radius: 15px;
-            position: relative;
-        }
-
-        .scroll-arrow::after {
-            content: '';
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 10px;
-            background: var(--electric-blue);
-            border-radius: 2px;
-            animation: scrollArrow 2s infinite;
-        }
-
-        @keyframes scrollArrow {
-            0% {
-                opacity: 0;
-                transform: translateX(-50%) translateY(0);
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translateX(-50%) translateY(20px);
-            }
-        }
-
-        /* Section Common Styles */
-        .section {
-            padding: 8rem 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .section:nth-child(even) {
-            background: var(--section-bg);
-        }
-
-        .section-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 3rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100px;
-            height: 4px;
-            background: var(--electric-blue);
-            box-shadow: 0 0 10px var(--electric-blue);
-        }
-
-        .section-subtitle {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 3rem;
-            max-width: 600px;
-            line-height: 1.6;
-        }
-
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .about-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .tech-chip {
-            background: rgba(0, 238, 255, 0.1);
-            border: 1px solid rgba(0, 238, 255, 0.3);
-            color: var(--electric-blue);
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            font-family: 'Source Code Pro', monospace;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            cursor: default;
-        }
-
-        .tech-chip:hover {
-            background: rgba(0, 238, 255, 0.2);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 238, 255, 0.2);
-        }
-
-        .about-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-        }
-
-        .about-stat {
-            background: rgba(18, 18, 32, 0.7);
-            border: 1px solid rgba(0, 238, 255, 0.2);
-            border-radius: 10px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .about-stat:hover {
-            border-color: var(--electric-blue);
-            transform: translateY(-5px);
-        }
-
-        /* Skills Section */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category {
-            background: rgba(18, 18, 32, 0.7);
-            border: 1px solid rgba(0, 238, 255, 0.2);
-            border-radius: 15px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .skill-category:hover {
-            border-color: var(--electric-blue);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 238, 255, 0.1);
-        }
-
-        .skill-category-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.5rem;
-            color: var(--electric-blue);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .skill-item {
-            margin-bottom: 1.5rem;
-        }
-
-        .skill-name {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
-        }
-
-        .skill-bar {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .skill-progress {
-            height: 100%;
-            background: linear-gradient(90deg, var(--electric-blue), var(--neon-pink));
-            border-radius: 4px;
-            width: 0;
-            transition: width 1.5s ease;
-        }
-
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: rgba(18, 18, 32, 0.7);
-            border: 1px solid rgba(0, 238, 255, 0.2);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .project-card:hover {
-            border-color: var(--electric-blue);
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 238, 255, 0.2);
-        }
-
-        .project-img {
-            height: 200px;
-            background: linear-gradient(45deg, var(--electric-blue), var(--neon-pink));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 3rem;
-            color: white;
-        }
-
-        .project-content {
-            padding: 1.5rem;
-        }
-
-        .project-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.5rem;
-            color: var(--electric-blue);
-            margin-bottom: 1rem;
-        }
-
-        .project-desc {
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .project-tech span {
-            background: rgba(0, 238, 255, 0.1);
-            color: var(--electric-blue);
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-family: 'Source Code Pro', monospace;
-        }
-
-        .project-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .project-link {
-            color: var(--electric-blue);
-            text-decoration: none;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .project-link:hover {
-            color: var(--neon-pink);
-            transform: translateX(5px);
-        }
-
-        /* Experience Section */
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            background: linear-gradient(to bottom, var(--electric-blue), transparent);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -2px;
-            box-shadow: 0 0 20px var(--electric-blue);
-        }
-
-        .timeline-item {
-            padding: 10px 40px;
-            position: relative;
-            width: 50%;
-            box-sizing: border-box;
-            margin-bottom: 3rem;
-        }
-
-        .timeline-item:nth-child(odd) {
-            left: 0;
-        }
-
-        .timeline-item:nth-child(even) {
-            left: 50%;
-        }
-
-        .timeline-content {
-            background: rgba(18, 18, 32, 0.7);
-            border: 1px solid rgba(0, 238, 255, 0.2);
-            border-radius: 15px;
-            padding: 2rem;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-content:hover {
-            border-color: var(--electric-blue);
-            transform: translateY(-5px);
-        }
-
-        .timeline-date {
-            font-family: 'Orbitron', monospace;
-            color: var(--electric-blue);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .timeline-desc {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.6;
-        }
-
-        /* Contact Section */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .contact-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(0, 238, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            color: var(--electric-blue);
-            transition: all 0.3s ease;
-        }
-
-        .contact-item:hover .contact-icon {
-            background: rgba(0, 238, 255, 0.2);
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--electric-blue);
-        }
-
-        .contact-text h3 {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-text p {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .contact-form {
-            background: rgba(18, 18, 32, 0.7);
-            border: 1px solid rgba(0, 238, 255, 0.2);
-            border-radius: 15px;
-            padding: 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--electric-blue);
-            box-shadow: 0 0 15px rgba(0, 238, 255, 0.2);
-        }
-
-        .submit-btn {
-            background: linear-gradient(90deg, var(--electric-blue), var(--neon-pink));
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-family: 'Orbitron', monospace;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 238, 255, 0.3);
-        }
-
-        /* Footer */
-        .footer {
-            background: #080810;
-            padding: 3rem 4rem;
-            text-align: center;
-            border-top: 1px solid rgba(0, 238, 255, 0.2);
-        }
-
-        .footer-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .footer-logo {
-            font-family: 'Orbitron', monospace;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--electric-blue);
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-text {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .social-link {
-            width: 50px;
-            height: 50px;
-            background: rgba(0, 238, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--electric-blue);
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .social-link:hover {
-            background: rgba(0, 238, 255, 0.2);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 238, 255, 0.3);
-        }
-
-        .copyright {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
-        }
-
-        /* SURPRISE ELEMENTS */
-        .surprise-container {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .surprise-element {
-            position: absolute;
-            opacity: 0;
-            animation: surprisePop 0.5s ease forwards;
-        }
-
-        @keyframes surprisePop {
-            0% {
-                opacity: 0;
-                transform: scale(0) rotate(0deg);
-            }
-            70% {
-                opacity: 1;
-                transform: scale(1.2) rotate(10deg);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-            }
-        }
-
-        .code-snippet {
-            font-family: 'Source Code Pro', monospace;
-            background: rgba(0, 238, 255, 0.1);
-            padding: 10px 15px;
-            border-radius: 5px;
-            border: 1px solid var(--electric-blue);
-            color: var(--electric-blue);
-            font-size: 0.9rem;
-            box-shadow: 0 0 15px var(--electric-blue);
-        }
-
-        /* ========== MOBILE RESPONSIVE STYLES ========== */
-        
-        /* Base Mobile Styles */
-        @media (max-width: 1200px) {
-            .main-container {
-                padding: 2rem;
-            }
-            
-            .photo-frame {
-                width: 350px;
-                height: 450px;
-            }
-            
-            .name-title {
-                font-size: 4.5rem;
-            }
-            
-            .section {
-                padding: 6rem 2rem;
-            }
-        }
-
-        /* Tablet Styles */
-        @media (max-width: 992px) {
-            .main-container {
-                flex-direction: column;
-                min-height: auto;
-                padding: 8rem 2rem 4rem;
-            }
-            
-            .photo-section {
-                height: auto;
-                margin-bottom: 3rem;
-                transform: translateX(0);
-                animation: fadeIn 1s ease forwards 0.5s;
-            }
-            
-            .photo-frame {
-                width: 320px;
-                height: 420px;
-                transform: perspective(1000px) rotateY(0deg);
-            }
-            
-            .text-section {
-                text-align: center;
-                width: 100%;
-            }
-            
-            .tagline-container {
-                height: 100px;
-            }
-            
-            .tagline {
-                font-size: 1.8rem;
-            }
-            
-            .about-content,
-            .contact-container {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-            
-            .skills-container {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-            
-            .projects-grid {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            }
-            
-            .timeline::after {
-                left: 31px;
-            }
-            
-            .timeline-item {
-                width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
-            }
-            
-            .timeline-item:nth-child(even) {
-                left: 0;
-            }
-        }
-
-        /* Mobile Styles */
-        @media (max-width: 768px) {
-            .main-container {
-                padding: 6rem 1.5rem 3rem;
-            }
-            
-            .nav-container {
-                padding: 0.8rem 1.5rem;
-            }
-            
-            .nav-logo {
-                font-size: 1.5rem;
-            }
-            
-            .nav-links {
-                display: none; /* Will show mobile menu */
-            }
-            
-            /* Mobile Menu */
-            .mobile-menu-btn {
-                display: block;
-                background: none;
-                border: none;
-                color: var(--electric-blue);
-                font-size: 1.5rem;
-                cursor: pointer;
-            }
-            
-            .mobile-menu {
-                position: fixed;
-                top: 60px;
-                left: 0;
-                width: 100%;
-                background: rgba(10, 10, 10, 0.98);
-                backdrop-filter: blur(15px);
-                padding: 1rem;
-                display: none;
-                flex-direction: column;
-                gap: 1rem;
-                border-bottom: 2px solid var(--electric-blue);
-                z-index: 999;
-            }
-            
-            .mobile-menu.active {
-                display: flex;
-            }
-            
-            .mobile-nav-link {
-                padding: 1rem;
-                color: white;
-                text-decoration: none;
-                font-family: 'Montserrat', sans-serif;
-                border-bottom: 1px solid rgba(0, 238, 255, 0.2);
-                transition: all 0.3s ease;
-            }
-            
-            .mobile-nav-link:hover {
-                color: var(--electric-blue);
-                padding-left: 1.5rem;
-            }
-            
-            .photo-frame {
-                width: 280px;
-                height: 380px;
-            }
-            
-            .name-title {
-                font-size: 3.5rem;
-                letter-spacing: 3px;
-            }
-            
-            .intro-line {
-                font-size: 1.2rem;
-            }
-            
-            .tagline-container {
-                height: 90px;
-                margin: 2rem 0;
-            }
-            
-            .tagline {
-                font-size: 1.5rem;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-                margin-top: 1.5rem;
-            }
-            
-            .stat-box {
-                padding: 1rem;
-            }
-            
-            .stat-number {
-                font-size: 2rem;
-            }
-            
-            .section {
-                padding: 4rem 1.5rem;
-            }
-            
-            .section-title {
-                font-size: 2.5rem;
-                margin-bottom: 2rem;
-            }
-            
-            .section-subtitle {
-                font-size: 1rem;
-                margin-bottom: 2rem;
-            }
-            
-            .about-stats {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .about-stat {
-                padding: 1.5rem;
-            }
-            
-            .tech-stack {
-                gap: 0.8rem;
-            }
-            
-            .tech-chip {
-                padding: 0.4rem 1rem;
-                font-size: 0.8rem;
-            }
-            
-            .skills-container {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .skill-category {
-                padding: 1.5rem;
-            }
-            
-            .projects-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .project-card {
-                margin-bottom: 1rem;
-            }
-            
-            .project-img {
-                height: 180px;
-                font-size: 2.5rem;
-            }
-            
-            .timeline-content {
-                padding: 1.5rem;
-            }
-            
-            .timeline-title {
-                font-size: 1.3rem;
-            }
-            
-            .contact-item {
-                flex-direction: column;
-                text-align: center;
-                gap: 1rem;
-            }
-            
-            .contact-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
-            }
-            
-            .contact-form {
-                padding: 1.5rem;
-            }
-            
-            .form-group input,
-            .form-group textarea {
-                padding: 0.8rem;
-            }
-            
-            .submit-btn {
-                width: 100%;
-                justify-content: center;
-                padding: 0.8rem 1.5rem;
-            }
-            
-            .footer {
-                padding: 2rem 1.5rem;
-            }
-            
-            .footer-logo {
-                font-size: 1.8rem;
-            }
-            
-            .social-links {
-                gap: 1rem;
-            }
-            
-            .social-link {
-                width: 45px;
-                height: 45px;
-                font-size: 1rem;
-            }
-            
-            .audio-toggle {
-                width: 50px;
-                height: 50px;
-                bottom: 20px;
-                right: 20px;
-                font-size: 1.2rem;
-            }
-            
-            .scroll-indicator {
-                display: none;
-            }
-            
-            .custom-cursor {
-                display: none;
-            }
-        }
-
-        /* Small Mobile Styles */
-        @media (max-width: 480px) {
-            .main-container {
-                padding: 5rem 1rem 2rem;
-            }
-            
-            .photo-frame {
-                width: 250px;
-                height: 320px;
-            }
-            
-            .name-title {
-                font-size: 2.8rem;
-                letter-spacing: 2px;
-            }
-            
-            .intro-line {
-                font-size: 1rem;
-                letter-spacing: 2px;
-            }
-            
-            .tagline-container {
-                height: 80px;
-                margin: 1.5rem 0;
-            }
-            
-            .tagline {
-                font-size: 1.3rem;
-            }
-            
-            .section {
-                padding: 3rem 1rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .section-subtitle {
-                font-size: 0.9rem;
-            }
-            
-            .about-text {
-                font-size: 1rem;
-                line-height: 1.6;
-            }
-            
-            .tech-chip {
-                padding: 0.3rem 0.8rem;
-                font-size: 0.75rem;
-            }
-            
-            .project-img {
-                height: 150px;
-                font-size: 2rem;
-            }
-            
-            .project-title {
-                font-size: 1.3rem;
-            }
-            
-            .project-desc {
-                font-size: 0.9rem;
-            }
-            
-            .timeline-item {
-                padding-left: 50px;
-                padding-right: 15px;
-                margin-bottom: 2rem;
-            }
-            
-            .timeline-content {
-                padding: 1rem;
-            }
-            
-            .timeline-title {
-                font-size: 1.2rem;
-            }
-            
-            .timeline-desc {
-                font-size: 0.9rem;
-            }
-            
-            .contact-icon {
-                width: 45px;
-                height: 45px;
-            }
-            
-            .contact-text h3 {
-                font-size: 1.1rem;
-            }
-            
-            .footer {
-                padding: 1.5rem 1rem;
-            }
-            
-            .footer-logo {
-                font-size: 1.6rem;
-            }
-            
-            .footer-text {
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Landscape Mode */
-        @media (max-height: 600px) and (orientation: landscape) {
-            .main-container {
-                min-height: auto;
-                padding-top: 8rem;
-                padding-bottom: 4rem;
-            }
-            
-            .photo-section {
-                height: 60vh;
-            }
-            
-            .photo-frame {
-                width: 250px;
-                height: 300px;
-            }
-            
-            .tagline-container {
-                height: 70px;
-                margin: 1rem 0;
-            }
-            
-            .tagline {
-                font-size: 1.5rem;
-            }
-            
-            .stats-grid {
-                margin-top: 1rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Flappy Meme</title>
+<style>
+  /* ── RESET ── */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    font-family: 'Arial Black', Arial, sans-serif;
+    user-select: none;
+  }
+
+  /* ── CANVAS WRAPPER ── */
+  #gameWrapper {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #gameCanvas {
+    display: block;
+    max-width: 100vw;
+    max-height: 100vh;
+  }
+
+  /* ── SCORE ── */
+  #scoreHud {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(1.8rem, 6vw, 3rem);
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 3px 0 rgba(0,0,0,0.75);
+    pointer-events: none;
+    z-index: 20;
+    letter-spacing: 3px;
+    display: none;
+  }
+
+  /* ══════════════════════════════════════════
+     OVERLAYS — shared base
+  ══════════════════════════════════════════ */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(12px, 3vh, 26px);
+    background: rgba(0, 0, 0, 0.82);
+    padding: clamp(20px, 5vw, 40px);
+    /* allow scrolling only if content overflows on tiny screens */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .overlay.hidden {
+    display: none !important;
+  }
+
+  /* ══════════════════════════════════════════
+     START SCREEN
+  ══════════════════════════════════════════ */
+  .game-title {
+    font-size: clamp(2rem, 9vw, 4.5rem);
+    font-weight: 900;
+    color: #FFD700;
+    text-align: center;
+    text-shadow: 0 5px 0 #7a4800, 0 0 40px rgba(255,200,0,0.65);
+    animation: titleBounce 2.6s ease-in-out infinite;
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+
+  @keyframes titleBounce {
+    0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+    50%       { transform: translateY(-10px) rotate(1.5deg); }
+  }
+
+  .sub-text {
+    font-size: clamp(0.85rem, 3vw, 1.2rem);
+    color: rgba(255,255,255,0.85);
+    text-align: center;
+    text-shadow: 0 2px 8px #000;
+    line-height: 1.7;
+  }
+
+  .hint-text {
+    font-size: clamp(0.68rem, 2.2vw, 0.82rem);
+    color: rgba(255,255,255,0.38);
+    text-align: center;
+  }
+
+  /* ══════════════════════════════════════════
+     BUTTONS — big enough to tap on mobile
+  ══════════════════════════════════════════ */
+  .btn {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-weight: 900;
+    border-radius: 60px;
+    /* generous tap target */
+    min-width: clamp(200px, 60vw, 280px);
+    min-height: 56px;
+    font-size: clamp(1.05rem, 4.5vw, 1.5rem);
+    padding: 14px 36px;
+    letter-spacing: 0.5px;
+    /* stops double-tap zoom on iOS */
+    touch-action: manipulation;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+
+  /* Red — Start Game */
+  .btn-red {
+    background: linear-gradient(135deg, #FF4500, #cc2000);
+    color: #fff;
+    box-shadow: 0 8px 0 #7a0f00, 0 0 32px rgba(255,69,0,0.45);
+  }
+  .btn-red:hover  { transform: translateY(-3px); box-shadow: 0 11px 0 #7a0f00; }
+  .btn-red:active { transform: translateY(5px) !important; box-shadow: 0 3px 0 #7a0f00 !important; }
+
+  /* Gold — Play Again */
+  .btn-gold {
+    background: linear-gradient(135deg, #FFD700, #e0a000);
+    color: #1a0a00;
+    box-shadow: 0 8px 0 #8B6200, 0 0 28px rgba(255,215,0,0.35);
+    /* hidden until game over */
+    display: none;
+    opacity: 0;
+  }
+  .btn-gold.show {
+    display: block;
+    animation: fadeUp 0.5s 0.3s ease forwards;
+  }
+  .btn-gold:hover  { transform: translateY(-3px); box-shadow: 0 11px 0 #8B6200; }
+  .btn-gold:active { transform: translateY(5px) !important; box-shadow: 0 3px 0 #8B6200 !important; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0);    }
+  }
+
+  /* ══════════════════════════════════════════
+     GAME OVER IMAGE
+  ══════════════════════════════════════════ */
+  #gameOverImg {
+    max-width: min(85vw, 400px);
+    max-height: 44vh;
+    object-fit: contain;
+    border-radius: 18px;
+    box-shadow: 0 0 70px rgba(255,60,0,0.55), 0 10px 40px rgba(0,0,0,0.8);
+    display: none;
+    animation: popIn 0.42s cubic-bezier(0.175, 0.885, 0.32, 1.45) forwards;
+  }
+
+  #gameOverImg.show { display: block; }
+
+  @keyframes popIn {
+    from { transform: scale(0.35); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+  }
+</style>
 </head>
 <body>
-    <!-- Loading Text -->
-    <div class="loading-text" id="loadingText">SYSTEM BOOTING...</div>
-    
-    <!-- Particle Background -->
-    <div class="particle-bg" id="particleBg"></div>
-    
-    <!-- Surprise Elements Container -->
-    <div class="surprise-container" id="surpriseContainer"></div>
-    
-    <!-- Custom Cursor -->
-    <div class="custom-cursor" id="cursor"></div>
-    
-    <!-- Navigation -->
-    <nav class="nav-container" id="navContainer">
-        <a href="#" class="nav-logo">PRINCE</a>
-        <div class="nav-links">
-            <a href="#home" class="nav-link">Home</a>
-            <a href="#about" class="nav-link">About</a>
-            <a href="#skills" class="nav-link">Skills</a>
-            <a href="#projects" class="nav-link">Projects</a>
-            <a href="#experience" class="nav-link">Experience</a>
-            <a href="#contact" class="nav-link">Contact</a>
-        </div>
-        <!-- Mobile Menu Button -->
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-            <i class="fas fa-bars"></i>
-        </button>
-    </nav>
-    
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="#home" class="mobile-nav-link">Home</a>
-        <a href="#about" class="mobile-nav-link">About</a>
-        <a href="#skills" class="mobile-nav-link">Skills</a>
-        <a href="#projects" class="mobile-nav-link">Projects</a>
-        <a href="#experience" class="mobile-nav-link">Experience</a>
-        <a href="#contact" class="mobile-nav-link">Contact</a>
-    </div>
-    
-    <!-- Scroll Indicator -->
-    <div class="scroll-indicator" id="scrollIndicator">
-        <div class="scroll-text">SCROLL</div>
-        <div class="scroll-arrow"></div>
-    </div>
-    
-    <!-- Main Content -->
-    <div class="portfolio-sections">
-        <!-- Hero Section -->
-        <section id="home" class="main-container">
-            <!-- Photo Section (LEFT) -->
-            <div class="photo-section">
-                <div class="photo-frame">
-                    <img id="user-photo" src="" alt="Prince">
-                    <div class="photo-overlay"></div>
-                    <div class="photo-glitch"></div>
-                </div>
-            </div>
-            
-            <!-- Text Section (RIGHT) -->
-            <div class="text-section">
-                <div class="intro-line" id="introLine"></div>
-                <h1 class="name-title">PRINCE</h1>
-                
-                <div class="tagline-container">
-                    <div class="tagline active" id="tagline1">
-                        <span class="highlight">Code</span> is my canvas
-                    </div>
-                    <div class="tagline" id="tagline2">
-                        Turning <span class="highlight">ideas</span> into reality
-                    </div>
-                    <div class="tagline" id="tagline3">
-                        Built for <span class="highlight">impact</span>
-                    </div>
-                    <div class="tagline" id="tagline4">
-                        <span class="highlight">Logic</span> over everything
-                    </div>
-                </div>
-                
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <div class="stat-number" id="projectsCount">0</div>
-                        <div class="stat-label">Projects</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number" id="clientsCount">0</div>
-                        <div class="stat-label">Clients</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number" id="solutions">100%</div>
-                        <div class="stat-label">Solutions</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- About Section -->
-        <section id="about" class="section">
-            <h2 class="section-title">About Me</h2>
-            <p class="section-subtitle">
-                BCA student focused on building strong foundations in Python and real-world problem solving.
-            </p>
-            
-            <div class="about-content">
-                <div class="about-text">
-                    <p>
-                        I'm a Bachelor of Computer Applications (BCA) student with a strong interest in Python programming and software development. 
-                        I focus on writing clean, logical, and well-structured code rather than rushing behind buzzwords.
-                    </p>
 
-                    <p>
-                        As part of my academic and self-learning journey, I have worked extensively with Python fundamentals, 
-                        including data types, control flow, functions, file handling, exception handling, and object-oriented programming.
-                    </p>
+<!-- SCORE -->
+<div id="scoreHud">0</div>
 
-                    <p>
-                        I enjoy converting concepts into working programs — whether it's file-based applications, 
-                        regex-driven text processing, basic GUI apps using Tkinter, or database-connected Python projects.
-                        My goal is to grow into a skilled software developer with a strong core, not shortcuts.
-                    </p>
-                    
-                    <div class="tech-stack">
-                        <span class="tech-chip">Python</span>
-                        <span class="tech-chip">OOP in Python</span>
-                        <span class="tech-chip">File Handling</span>
-                        <span class="tech-chip">Regular Expressions</span>
-                        <span class="tech-chip">Tkinter</span>
-                        <span class="tech-chip">MySQL</span>
-                        <span class="tech-chip">HTML</span>
-                        <span class="tech-chip">CSS</span>
-                        <span class="tech-chip">Git</span>
-                    </div>
-                </div>
-                
-                <div class="about-stats">
-                    <div class="about-stat">
-                        <div class="stat-number">BCA</div>
-                        <div class="stat-label">Undergraduate Student</div>
-                    </div>
-                    <div class="about-stat">
-                        <div class="stat-number">Python</div>
-                        <div class="stat-label">Primary Language</div>
-                    </div>
-                    <div class="about-stat">
-                        <div class="stat-number">Core</div>
-                        <div class="stat-label">Strong Fundamentals</div>
-                    </div>
-                    <div class="about-stat">
-                        <div class="stat-number">Learning</div>
-                        <div class="stat-label">Consistent Growth</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Skills Section -->
-        <section id="skills" class="section">
-            <h2 class="section-title">Technical Skills</h2>
-            <p class="section-subtitle">
-                Technologies I actively use and continuously improve through practice and projects.
-            </p>
-            
-            <div class="skills-container">
+<!-- CANVAS -->
+<div id="gameWrapper">
+  <canvas id="gameCanvas"></canvas>
+</div>
 
-                <!-- Programming & Core -->
-                <div class="skill-category">
-                    <h3 class="skill-category-title"><i class="fas fa-laptop-code"></i> Programming</h3>
+<!-- ═══ START SCREEN ═══ -->
+<div id="startScreen" class="overlay">
+  <div class="game-title">🐦 Flappy Meme</div>
+  <div class="sub-text">
+    Tap &nbsp;•&nbsp; Click &nbsp;•&nbsp; Space to Flap!<br>
+    Survive the pipes. Don't die. 💀
+  </div>
+  <button class="btn btn-red" id="btnStart">▶ &nbsp;Start Game</button>
+  <div class="hint-text">Touch anywhere to flap on mobile</div>
+</div>
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Python</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="75"></div>
-                        </div>
-                    </div>
+<!-- ═══ GAME OVER ═══ -->
+<div id="gameOverScreen" class="overlay hidden">
+  <img id="gameOverImg" src="gameover_image.png" alt="Game Over">
+  <button class="btn btn-gold" id="btnAgain">↩ &nbsp;Play Again</button>
+</div>
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>C Programming</span>
-                            <span>65%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="65"></div>
-                        </div>
-                    </div>
+<script>
+'use strict';
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Java (OOP Basics)</span>
-                            <span>60%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="60"></div>
-                        </div>
-                    </div>
-                </div>
+// ══════════════════════════════════════════════════
+//  AUDIO  — never starts automatically
+// ══════════════════════════════════════════════════
+const bgMusic = new Audio('bg_music.mp3');
+bgMusic.loop  = true;
+bgMusic.volume = 0.6;
 
-                <!-- Web Technologies -->
-                <div class="skill-category">
-                    <h3 class="skill-category-title"><i class="fas fa-code"></i> Web Technologies</h3>
+const goSound = new Audio('gameover_sound.mp3');
+goSound.loop  = false;
+goSound.volume = 1.0;
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>HTML5</span>
-                            <span>80%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="80"></div>
-                        </div>
-                    </div>
+/** Start bg music from the 10-second mark */
+function startMusic() {
+  bgMusic.currentTime = 10;
+  bgMusic.play().catch(function() {});
+}
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>CSS3</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="75"></div>
-                        </div>
-                    </div>
+/** Immediately stop bg music */
+function stopMusic() {
+  bgMusic.pause();
+}
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>JavaScript (Basics)</span>
-                            <span>60%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="60"></div>
-                        </div>
-                    </div>
-                </div>
+/** Play game-over sound once */
+function playGoSound() {
+  goSound.currentTime = 0;
+  goSound.play().catch(function() {});
+}
 
-                <!-- Python Specialization -->
-                <div class="skill-category">
-                    <h3 class="skill-category-title"><i class="fas fa-python"></i> Python Specialization</h3>
+// ══════════════════════════════════════════════════
+//  IMAGE ASSETS
+// ══════════════════════════════════════════════════
+var imgBird = new Image(); imgBird.src = 'bird_actor.png';
+var imgPipe = new Image(); imgPipe.src = 'pipe_actor.png';
+var imgBg   = new Image(); imgBg.src   = 'background.jpg';
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>OOP in Python</span>
-                            <span>70%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="70"></div>
-                        </div>
-                    </div>
+// ══════════════════════════════════════════════════
+//  DOM REFS
+// ══════════════════════════════════════════════════
+var startScreen    = document.getElementById('startScreen');
+var gameOverScreen = document.getElementById('gameOverScreen');
+var gameOverImg    = document.getElementById('gameOverImg');
+var btnAgain       = document.getElementById('btnAgain');
+var scoreHud       = document.getElementById('scoreHud');
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>File Handling & Exceptions</span>
-                            <span>75%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="75"></div>
-                        </div>
-                    </div>
+// ══════════════════════════════════════════════════
+//  OVERLAY HELPERS
+// ══════════════════════════════════════════════════
+function hideStart() {
+  startScreen.classList.add('hidden');
+}
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Regular Expressions</span>
-                            <span>65%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="65"></div>
-                        </div>
-                    </div>
+function showGameOver() {
+  gameOverImg.classList.add('show');
+  btnAgain.classList.add('show');
+  gameOverScreen.classList.remove('hidden');
+}
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Tkinter (GUI)</span>
-                            <span>60%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="60"></div>
-                        </div>
-                    </div>
-                </div>
+function hideGameOver() {
+  gameOverScreen.classList.add('hidden');
+  gameOverImg.classList.remove('show');
+  btnAgain.classList.remove('show');
+}
 
-                <!-- Tools & Databases -->
-                <div class="skill-category">
-                    <h3 class="skill-category-title"><i class="fas fa-database"></i> Tools & Databases</h3>
+// ══════════════════════════════════════════════════
+//  START BUTTON
+// ══════════════════════════════════════════════════
+document.getElementById('btnStart').addEventListener('click', function(e) {
+  e.preventDefault();
+  hideStart();
+  scoreHud.style.display = 'block';
+  startMusic();          // music starts only here
+  initGame();
+}, { passive: false });
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>MySQL</span>
-                            <span>65%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="65"></div>
-                        </div>
-                    </div>
+// ══════════════════════════════════════════════════
+//  PLAY AGAIN BUTTON
+//  Bind both click and touchend so it fires on every
+//  mobile browser reliably.
+// ══════════════════════════════════════════════════
+function onPlayAgain(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  hideGameOver();
+  startMusic();          // restart from 10 s
+  if (window._resetGame) window._resetGame();
+}
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Git & GitHub</span>
-                            <span>70%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="70"></div>
-                        </div>
-                    </div>
+btnAgain.addEventListener('click',    onPlayAgain, { passive: false });
+btnAgain.addEventListener('touchend', onPlayAgain, { passive: false });
 
-                    <div class="skill-item">
-                        <div class="skill-name">
-                            <span>Linux (Ubuntu)</span>
-                            <span>60%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="60"></div>
-                        </div>
-                    </div>
-                </div>
+// ══════════════════════════════════════════════════
+//  GAME
+// ══════════════════════════════════════════════════
+function initGame() {
+  var canvas = document.getElementById('gameCanvas');
+  var ctx    = canvas.getContext('2d');
 
-            </div>
-        </section>
-        
-        <!-- Projects Section -->
-        <section id="projects" class="section">
-            <h2 class="section-title">Projects</h2>
-            <p class="section-subtitle">
-                Real projects built through hands-on learning, collaboration, and experimentation.
-            </p>
-            
-            <div class="projects-grid">
+  var BIRD_W = 60;
+  var BIRD_H = 45;
 
-                <!-- Project 1 -->
-                <div class="project-card">
-                    <div class="project-img">
-                        <i class="fas fa-question-circle"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Multiplayer Quiz App</h3>
-                        <p class="project-desc">
-                            A real-time multiplayer quiz application built using React.js where multiple users can join,
-                            answer questions simultaneously, and view live scores.
-                        </p>
-                        <div class="project-tech">
-                            <span>React.js</span>
-                            <span>JavaScript</span>
-                            <span>HTML</span>
-                            <span>CSS</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
-                        </div>
-                    </div>
-                </div>
+  var W, H, GROUND_H, PIPE_W, PIPE_GAP;
 
-                <!-- Project 2 -->
-                <div class="project-card">
-                    <div class="project-img">
-                        <i class="fas fa-headphones"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">8D Audio Experience (Python)</h3>
-                        <p class="project-desc">
-                            A Python-based audio processing project that converts normal audio into an 8D surround sound
-                            experience using channel panning and audio effects.
-                        </p>
-                        <div class="project-tech">
-                            <span>Python</span>
-                            <span>Audio Processing</span>
-                            <span>Pydub</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
-                        </div>
-                    </div>
-                </div>
+  function resize() {
+    W        = Math.min(window.innerWidth, 480);
+    H        = window.innerHeight;
+    GROUND_H = Math.round(H * 0.08);
+    PIPE_W   = Math.round(W * 0.16);
+    PIPE_GAP = Math.round(H * 0.27);
+    canvas.width        = W;
+    canvas.height       = H;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+  }
+  resize();
+  window.addEventListener('resize', resize);
 
-                <!-- Project 3 -->
-                <div class="project-card">
-                    <div class="project-img">
-                        <i class="fas fa-hand-paper"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Hand Gesture Volume Controller</h3>
-                        <p class="project-desc">
-                            A computer vision project that controls system volume using hand gestures captured through a webcam.
-                            Built to explore real-time image processing and hardware interaction.
-                        </p>
-                        <div class="project-tech">
-                            <span>Python</span>
-                            <span>OpenCV</span>
-                            <span>MediaPipe</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link"><i class="fab fa-github"></i> Code</a>
-                        </div>
-                    </div>
-                </div>
+  // ── Game state ────────────────────────────────────
+  var running   = false;
+  var dead      = false;
+  var score     = 0;
+  var frameId   = null;
+  var groundX   = 0;
+  var lastPipe  = 0;
+  var pipes     = [];
+  var particles = [];
 
-            </div>
-        </section>
-        
-        <!-- Experience Section -->
-        <section id="experience" class="section">
-            <h2 class="section-title">Work Experience</h2>
-            <p class="section-subtitle">
-                Hands-on experience through real projects, freelancing, and academic development work.
-            </p>
-            
-            <div class="timeline">
+  // ── Bird physics — NOT changed ────────────────────
+  var GRAVITY  =  0.38;
+  var FLAP_V   = -7.5;
+  var MAX_FALL =  9;
+  var MAX_RISE = -10;
+  var bird = { x: 0, y: 0, vy: 0, angle: 0 };
 
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2024 - Present</div>
-                        <h3 class="timeline-title">Web Developer – bestpackage.in</h3>
-                        <p class="timeline-desc">
-                            Actively working on the bestpackage.in website, handling frontend development,
-                            layout improvements, content updates, and feature enhancements.
-                            Focused on improving user experience, responsiveness, and overall site structure.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2023 - Present</div>
-                        <h3 class="timeline-title">WordPress Developer</h3>
-                        <p class="timeline-desc">
-                            Worked as a WordPress developer on multiple client and personal projects.
-                            Customized themes, built responsive pages, optimized performance,
-                            and handled basic SEO and plugin integrations.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2022 - Present</div>
-                        <h3 class="timeline-title">BCA Student & Python Developer</h3>
-                        <p class="timeline-desc">
-                            Pursuing BCA while actively building Python-based projects.
-                            Worked on applications involving file handling, regular expressions,
-                            GUI development using Tkinter, audio processing, and computer vision concepts.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2022 - 2023</div>
-                        <h3 class="timeline-title">Frontend Developer (Learning & Practice)</h3>
-                        <p class="timeline-desc">
-                            Built responsive websites using HTML, CSS, and JavaScript.
-                            Developed interactive UI components and a multiplayer quiz application using React.js
-                            as part of hands-on learning and practice.
-                        </p>
-                    </div>
-                </div>
+  function resetBird() {
+    bird.x     = W * 0.22;
+    bird.y     = H * 0.42;
+    bird.vy    = 0;
+    bird.angle = 0;
+  }
 
-            </div>
-        </section>
-        
-        <!-- Contact Section -->
-        <section id="contact" class="section">
-            <h2 class="section-title">Get In Touch</h2>
-            <p class="section-subtitle">
-                Have an idea, project, or collaboration in mind? Let's talk.
-            </p>
-            
-            <div class="contact-container">
-                <div class="contact-info">
+  // ── Pipe constants — NOT changed ─────────────────
+  var PIPE_SPEED = 2.6;
+  var PIPE_INT   = 1700;
 
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h3>Email</h3>
-                            <p>uk05065020524@gmail.com</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h3>Phone</h3>
-                            <p>+91 7668187737</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h3>Location</h3>
-                            <p>Champawat, Uttarakhand, India</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h3>Availability</h3>
-                            <p>Open to internships, freelance & learning opportunities</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Contact Form -->
-                <div class="contact-form">
-                    <form 
-                        id="contactForm"
-                        action="https://formsubmit.co/uk05065020524@gmail.com"
-                        method="POST"
-                    >
+  function spawnPipe() {
+    var minTop = H * 0.10;
+    var maxTop = H - GROUND_H - PIPE_GAP - H * 0.10;
+    pipes.push({
+      x:      W + PIPE_W,
+      topH:   minTop + Math.random() * (maxTop - minTop),
+      passed: false
+    });
+  }
 
-                        <!-- FormSubmit hidden configs -->
-                        <input type="hidden" name="_subject" value="New Contact Message from Portfolio">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_template" value="table">
-                        <input type="hidden" name="_next" value="http://127.0.0.1:5500/">
+  // ── Particles ─────────────────────────────────────
+  function spawnParticles() {
+    var count = 4 + Math.floor(Math.random() * 4);
+    for (var i = 0; i < count; i++) {
+      var sz = BIRD_H * 0.14 + Math.random() * BIRD_H * 0.22;
+      particles.push({
+        x:     bird.x - BIRD_W * 0.42,
+        y:     bird.y + (Math.random() - 0.5) * BIRD_H * 0.55,
+        vx:    -(1.4 + Math.random() * 2.8),
+        vy:    (Math.random() - 0.5) * 1.8,
+        sz:    sz,
+        maxSz: sz,
+        life:  1.0,
+        decay: 0.022 + Math.random() * 0.028,
+        hue:   12 + Math.random() * 38,
+        sat:   88 + Math.random() * 12
+      });
+    }
+  }
 
-                        <div class="form-group">
-                            <label for="name">Your Name</label>
-                            <input type="text" name="name" id="name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" name="email" id="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="subject">Subject</label>
-                            <input type="text" name="subject" id="subject" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message">Your Message</label>
-                            <textarea name="message" id="message" rows="5" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="submit-btn">
-                            <i class="fas fa-paper-plane"></i> Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-logo">PRINCE</div>
-                <p class="footer-text">
-                    Learning, building, and improving every day — one project at a time.
-                    Let's connect and grow together.
-                </p>
-                
-                <div class="social-links">
-                    <a href="https://github.com/prince007123" target="_blank" class="social-link" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/prince-joshi-b60a2335a/" target="_blank" class="social-link" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://www.instagram.com/_._prince_007_._/" target="_blank" class="social-link" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
-                
-                <p class="copyright">
-                    © 2026 Prince Joshi. All rights reserved.
-                    | Built with <i class="fas fa-heart" style="color: var(--neon-pink);"></i> and clean code
-                </p>
-            </div>
-        </footer>
-    </div>
-    
-    <!-- Audio Toggle -->
-    <div class="audio-toggle" id="audioToggle">
-        <i class="fas fa-volume-up"></i>
-    </div>
-    
-    <!-- Background Audio -->
-    <audio id="bgAudio" loop preload="auto">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    
-    <script>
-        // Initialize Variables
-        const loadingText = document.getElementById('loadingText');
-        const userPhoto = document.getElementById('user-photo');
-        const introLine = document.getElementById('introLine');
-        const surpriseContainer = document.getElementById('surpriseContainer');
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
-        // Photo names to try
-        const photoNames = [
-            'prince.jpg', 'prince.jpeg', 'prince.png', 
-            'photo.jpg', 'profile.jpg', 'me.jpg',
-            'image.jpg', 'user.jpg', 'avatar.jpg'
-        ];
-        
-        // Start the sequence
-        window.addEventListener('load', function() {
-            // Hide loading text after 1 second
-            setTimeout(() => {
-                loadingText.classList.add('fade-out');
-                
-                // Find and load user photo
-                findUserPhoto();
-                
-                // Start animations after photo loads
-                setTimeout(startAnimations, 500);
-                
-                // Initialize mobile menu
-                initMobileMenu();
-            }, 1000);
-        });
-        
-        // Initialize mobile menu
-        function initMobileMenu() {
-            mobileMenuBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                mobileMenu.classList.toggle('active');
-                this.innerHTML = mobileMenu.classList.contains('active') ? 
-                    '<i class="fas fa-times"></i>' : 
-                    '<i class="fas fa-bars"></i>';
-            });
-            
-            // Close mobile menu when clicking outside
-            document.addEventListener('click', function(e) {
-                if (mobileMenu.classList.contains('active') && 
-                    !mobileMenu.contains(e.target) && 
-                    !mobileMenuBtn.contains(e.target)) {
-                    mobileMenu.classList.remove('active');
-                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                }
-            });
-            
-            // Close mobile menu when clicking a link
-            mobileMenu.querySelectorAll('.mobile-nav-link').forEach(link => {
-                link.addEventListener('click', function() {
-                    mobileMenu.classList.remove('active');
-                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                });
-            });
-            
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 768 && mobileMenu.classList.contains('active')) {
-                    mobileMenu.classList.remove('active');
-                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                }
-            });
+  function updateParticles() {
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.x += p.vx;  p.y += p.vy;
+      p.vx *= 0.93; p.vy *= 0.91;
+      p.life -= p.decay;
+      p.sz = p.maxSz * p.life;
+      if (p.life <= 0) particles.splice(i, 1);
+    }
+  }
+
+  function drawParticles() {
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      var a = p.life * p.life;
+
+      // Additive glow
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      var grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.sz * 2.8);
+      grd.addColorStop(0, 'hsla(' + p.hue + ',' + p.sat + '%,68%,' + (a * 0.52).toFixed(3) + ')');
+      grd.addColorStop(1, 'hsla(' + (p.hue + 18) + ',80%,40%,0)');
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.sz * 2.8, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+      ctx.restore();
+
+      // Hot core
+      ctx.save();
+      ctx.globalAlpha = a;
+      var core = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.sz);
+      core.addColorStop(0,   'hsl(60,100%,97%)');
+      core.addColorStop(0.3, 'hsl(' + p.hue + ',' + p.sat + '%,72%)');
+      core.addColorStop(0.7, 'hsl(' + (p.hue + 12) + ',85%,52%)');
+      core.addColorStop(1,   'hsl(' + (p.hue + 25) + ',70%,34%)');
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.sz, 0, Math.PI * 2);
+      ctx.fillStyle = core;
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  // ── Draw: Background ──────────────────────────────
+  function drawBackground() {
+    if (imgBg.complete && imgBg.naturalWidth > 0) {
+      var iw    = imgBg.naturalWidth;
+      var ih    = imgBg.naturalHeight;
+      var scale = Math.max(W / iw, H / ih);
+      var dw    = iw * scale;
+      var dh    = ih * scale;
+      ctx.drawImage(imgBg, (W - dw) / 2, (H - dh) / 2, dw, dh);
+    } else {
+      var sky = ctx.createLinearGradient(0, 0, 0, H);
+      sky.addColorStop(0, '#1a1a2e');
+      sky.addColorStop(1, '#16213e');
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, W, H);
+    }
+  }
+
+  // ── Draw: Ground ──────────────────────────────────
+  function drawGround() {
+    var gY = H - GROUND_H;
+    var g  = ctx.createLinearGradient(0, gY, 0, H);
+    g.addColorStop(0,    '#4a8c2a');
+    g.addColorStop(0.12, '#2d5a1b');
+    g.addColorStop(1,    '#0d1a08');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, gY, W, GROUND_H);
+    ctx.fillStyle = '#5aa030';
+    ctx.fillRect(0, gY, W, 6);
+    ctx.strokeStyle = 'rgba(255,255,255,0.09)';
+    ctx.lineWidth = 1;
+    var dw    = 28;
+    var total = 74;
+    var off   = groundX % total;
+    for (var x = -total + off; x < W + total; x += total) {
+      ctx.beginPath();
+      ctx.moveTo(x,      gY + 18);
+      ctx.lineTo(x + dw, gY + 18);
+      ctx.stroke();
+    }
+  }
+
+  // ── Draw: Pipes ───────────────────────────────────
+  function drawPipes() {
+    for (var i = 0; i < pipes.length; i++) {
+      var p    = pipes[i];
+      var botY = p.topH + PIPE_GAP;
+      var botH = H - GROUND_H - botY;
+      if (imgPipe.complete && imgPipe.naturalWidth > 0) {
+        if (p.topH > 0) {
+          ctx.save();
+          ctx.translate(p.x, p.topH);
+          ctx.scale(1, -1);
+          ctx.drawImage(imgPipe, 0, 0, PIPE_W, p.topH);
+          ctx.restore();
         }
-        
-        // Find user photo
-        function findUserPhoto() {
-            let photoFound = false;
-            
-            photoNames.forEach(name => {
-                const img = new Image();
-                img.src = name;
-                
-                img.onload = function() {
-                    if (!photoFound) {
-                        photoFound = true;
-                        userPhoto.src = name;
-                    }
-                };
-            });
-            
-            // If no photo found, use placeholder
-            setTimeout(() => {
-                if (!photoFound) {
-                    userPhoto.src = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80';
-                }
-            }, 2000);
+        if (botH > 0) ctx.drawImage(imgPipe, p.x, botY, PIPE_W, botH);
+      } else {
+        ctx.fillStyle = '#2d8b2d';
+        if (p.topH > 0) ctx.fillRect(p.x, 0,    PIPE_W, p.topH);
+        if (botH  > 0)  ctx.fillRect(p.x, botY,  PIPE_W, botH);
+      }
+    }
+  }
+
+  // ── Draw: Bird ────────────────────────────────────
+  function drawBird() {
+    ctx.save();
+    ctx.translate(bird.x, bird.y);
+    ctx.rotate(bird.angle);
+    if (imgBird.complete && imgBird.naturalWidth > 0) {
+      ctx.drawImage(imgBird, -BIRD_W / 2, -BIRD_H / 2, BIRD_W, BIRD_H);
+    } else {
+      ctx.fillStyle = '#FFD700';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, BIRD_W / 2, BIRD_H / 2, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // ── Flap — particles only, no sound ───────────────
+  function flap() {
+    if (dead) return;
+    if (!running) {
+      running  = true;
+      lastPipe = performance.now();
+    }
+    bird.vy = FLAP_V;
+    spawnParticles();
+  }
+
+  // ── Collision — unchanged ─────────────────────────
+  function checkCollision() {
+    var hw = BIRD_W * 0.38;
+    var hh = BIRD_H * 0.38;
+    if (bird.y + hh >= H - GROUND_H || bird.y - hh <= 0) return true;
+    for (var i = 0; i < pipes.length; i++) {
+      var p = pipes[i];
+      if (bird.x + hw > p.x && bird.x - hw < p.x + PIPE_W) {
+        if (bird.y - hh < p.topH || bird.y + hh > p.topH + PIPE_GAP) return true;
+      }
+    }
+    return false;
+  }
+
+  // ── Game Over ─────────────────────────────────────
+  function triggerDeath() {
+    dead    = true;
+    running = false;
+    stopMusic();
+    playGoSound();
+    setTimeout(showGameOver, 450);
+  }
+
+  // ── Reset ─────────────────────────────────────────
+  function resetGame() {
+    pipes     = [];
+    particles = [];
+    score     = 0;
+    dead      = false;
+    running   = false;
+    groundX   = 0;
+    scoreHud.textContent = '0';
+    resetBird();
+    if (frameId) cancelAnimationFrame(frameId);
+    loop(performance.now());
+  }
+
+  window._resetGame = resetGame;
+
+  // ── Main Loop ─────────────────────────────────────
+  function loop(ts) {
+    frameId = requestAnimationFrame(loop);
+    ctx.clearRect(0, 0, W, H);
+    drawBackground();
+
+    if (running && !dead) {
+      groundX += PIPE_SPEED;
+
+      bird.vy    = Math.max(MAX_RISE, Math.min(MAX_FALL, bird.vy + GRAVITY));
+      bird.y    += bird.vy;
+      bird.angle = Math.max(-0.42, Math.min(Math.PI / 2.4, bird.vy * 0.065));
+
+      if (ts - lastPipe > PIPE_INT) { spawnPipe(); lastPipe = ts; }
+
+      for (var i = 0; i < pipes.length; i++) {
+        pipes[i].x -= PIPE_SPEED;
+        if (!pipes[i].passed && pipes[i].x + PIPE_W < bird.x) {
+          pipes[i].passed = true;
+          score++;
+          scoreHud.textContent = score;
         }
-        
-        // Start all animations
-        function startAnimations() {
-            // Type intro line
-            typeText('I AM', introLine, 100, () => {
-                // Start tagline rotation
-                startTaglineRotation();
-                
-                // Animate stats
-                animateStats();
-                
-                // Create particles
-                createParticles();
-                
-                // Initialize cursor
-                initCursor();
-                
-                // Add surprise elements
-                addSurpriseElements();
-                
-                // Initialize audio
-                initAudio();
-                
-                // Initialize skill bars
-                initSkillBars();
-                
-                // Initialize form
-                initForm();
-                
-                // Initialize scroll animations
-                initScrollAnimations();
-            });
-        }
-        
-        // Type text effect
-        function typeText(text, element, speed, callback) {
-            let i = 0;
-            element.textContent = '';
-            
-            function typeWriter() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, speed);
-                } else if (callback) {
-                    setTimeout(callback, 500);
-                }
-            }
-            
-            typeWriter();
-        }
-        
-        // Tagline rotation
-        function startTaglineRotation() {
-            const taglines = document.querySelectorAll('.tagline');
-            let currentTagline = 0;
-            
-            setInterval(() => {
-                taglines[currentTagline].classList.remove('active');
-                
-                currentTagline = (currentTagline + 1) % taglines.length;
-                
-                setTimeout(() => {
-                    taglines[currentTagline].classList.add('active');
-                    
-                    // Add surprise effect on tagline change
-                    if (Math.random() > 0.5) {
-                        addSurpriseElement();
-                    }
-                }, 500);
-            }, 3000);
-        }
-        
-        // Animate stats
-        function animateStats() {
-            animateCounter('projectsCount', 47, 0, 2000);
-            animateCounter('clientsCount', 32, 0, 2200);
-            setTimeout(() => {
-                document.getElementById('solutions').textContent = '100%';
-            }, 2500);
-        }
-        
-        // Counter animation
-        function animateCounter(elementId, target, current, duration) {
-            const element = document.getElementById(elementId);
-            const increment = target / (duration / 16);
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-                element.textContent = Math.floor(current);
-            }, 16);
-        }
-        
-        // Create particle background
-        function createParticles() {
-            const particleBg = document.getElementById('particleBg');
-            const particleCount = window.innerWidth < 768 ? 50 : 100;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const size = Math.random() * 3 + 1;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                const posX = Math.random() * 100;
-                particle.style.left = `${posX}vw`;
-                
-                const duration = Math.random() * 10 + 10;
-                const delay = Math.random() * 5;
-                particle.style.animation = `floatParticle ${duration}s linear ${delay}s infinite`;
-                
-                particle.style.setProperty('--tx', `${Math.random() * 100 - 50}px`);
-                
-                const colors = ['#00eeff', '#ff00ff', '#ffff00'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.background = color;
-                particle.style.boxShadow = `0 0 10px ${color}`;
-                
-                particleBg.appendChild(particle);
-            }
-        }
-        
-        // Add surprise elements
-        function addSurpriseElements() {
-            setTimeout(() => addSurpriseElement(), 1000);
-            setTimeout(() => addSurpriseElement(), 2000);
-            setTimeout(() => addSurpriseElement(), 3000);
-            
-            setInterval(() => {
-                if (Math.random() > 0.7) {
-                    addSurpriseElement();
-                }
-            }, 5000);
-        }
-        
-        // Add single surprise element
-        function addSurpriseElement() {
-            const surprise = document.createElement('div');
-            surprise.classList.add('surprise-element');
-            
-            const posX = Math.random() * 80 + 10;
-            const posY = Math.random() * 80 + 10;
-            surprise.style.left = `${posX}vw`;
-            surprise.style.top = `${posY}vh`;
-            
-            const surpriseType = Math.floor(Math.random() * 3);
-            
-            switch(surpriseType) {
-                case 0:
-                    surprise.classList.add('code-snippet');
-                    const codeLines = [
-                        'if (problem) { solve(); }',
-                        'while(!success) { tryAgain(); }',
-                        'const genius = prince;',
-                        '// This code writes itself',
-                        'export default awesome;'
-                    ];
-                    surprise.textContent = codeLines[Math.floor(Math.random() * codeLines.length)];
-                    break;
-                    
-                case 1:
-                    surprise.classList.add('code-snippet');
-                    let binary = '';
-                    for (let i = 0; i < 8; i++) {
-                        binary += Math.random() > 0.5 ? '1' : '0';
-                    }
-                    surprise.textContent = `0b${binary}`;
-                    break;
-                    
-                case 2:
-                    surprise.classList.add('code-snippet');
-                    const emojis = ['🚀', '⚡', '💻', '🔥', '✨', '🎯'];
-                    surprise.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                    break;
-            }
-            
-            surpriseContainer.appendChild(surprise);
-            
-            setTimeout(() => {
-                surprise.style.opacity = '0';
-                surprise.style.transform = 'scale(0.5)';
-                setTimeout(() => {
-                    if (surprise.parentNode) {
-                        surprise.parentNode.removeChild(surprise);
-                    }
-                }, 500);
-            }, 2000);
-        }
-        
-        // Initialize custom cursor (only for desktop)
-        function initCursor() {
-            const cursor = document.getElementById('cursor');
-            
-            if (window.innerWidth > 768) {
-                document.addEventListener('mousemove', (e) => {
-                    cursor.style.left = e.clientX + 'px';
-                    cursor.style.top = e.clientY + 'px';
-                });
-                
-                const interactiveElements = document.querySelectorAll('a, button, .project-card, .skill-category, .stat-box, .timeline-content, .contact-item');
-                
-                interactiveElements.forEach(element => {
-                    element.addEventListener('mouseenter', () => {
-                        cursor.style.transform = 'scale(1.8)';
-                        cursor.style.borderColor = '#ff00ff';
-                    });
-                    
-                    element.addEventListener('mouseleave', () => {
-                        cursor.style.transform = 'scale(1)';
-                        cursor.style.borderColor = '#00eeff';
-                    });
-                });
-            } else {
-                cursor.style.display = 'none';
-            }
-        }
-        
-        // Initialize audio
-        function initAudio() {
-            const audioToggle = document.getElementById('audioToggle');
-            const bgAudio = document.getElementById('bgAudio');
-            let audioEnabled = false;
-            
-            audioToggle.addEventListener('click', () => {
-                audioEnabled = !audioEnabled;
-                
-                if (audioEnabled) {
-                    bgAudio.volume = 0.2;
-                    bgAudio.play().catch(e => console.log("Audio play failed:", e));
-                    audioToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
-                    audioToggle.style.boxShadow = '0 0 30px var(--electric-blue)';
-                } else {
-                    bgAudio.pause();
-                    audioToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                    audioToggle.style.boxShadow = 'none';
-                }
-            });
-            
-            document.addEventListener('keydown', (e) => {
-                if (e.code === 'Space') {
-                    e.preventDefault();
-                    audioToggle.click();
-                }
-            });
-        }
-        
-        // Initialize skill bars
-        function initSkillBars() {
-            const skillBars = document.querySelectorAll('.skill-progress');
-            
-            skillBars.forEach(bar => {
-                const width = bar.getAttribute('data-width');
-                bar.style.width = `${width}%`;
-            });
-        }
-        
-        // Initialize form
-        function initForm() {
-            const contactForm = document.getElementById('contactForm');
-            
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Show success message
-                const submitBtn = this.querySelector('.submit-btn');
-                const originalText = submitBtn.innerHTML;
-                
-                submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-                submitBtn.style.background = 'linear-gradient(90deg, var(--matrix-green), var(--electric-blue))';
-                
-                // Reset form
-                this.reset();
-                
-                // Add surprise effect
-                for (let i = 0; i < 3; i++) {
-                    setTimeout(() => addSurpriseElement(), i * 200);
-                }
-                
-                // Reset button after 3 seconds
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.style.background = 'linear-gradient(90deg, var(--electric-blue), var(--neon-pink))';
-                }, 3000);
-            });
-        }
-        
-        // Initialize scroll animations
-        function initScrollAnimations() {
-            // Hide scroll indicator when scrolling
-            const scrollIndicator = document.getElementById('scrollIndicator');
-            
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) {
-                    scrollIndicator.style.opacity = '0';
-                } else {
-                    scrollIndicator.style.opacity = '1';
-                }
-                
-                // Animate sections on scroll
-                animateOnScroll();
-            });
-            
-            // Smooth scrolling for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        }
-        
-        // Animate elements on scroll
-        function animateOnScroll() {
-            const elements = document.querySelectorAll('.skill-category, .project-card, .timeline-content, .about-stat');
-            
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementTop < windowHeight - 100) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }
-            });
-        }
-        
-        // Interactive photo effect
-        userPhoto.addEventListener('mouseenter', () => {
-            if (window.innerWidth > 768) {
-                userPhoto.style.filter = 'grayscale(0%) contrast(130%) brightness(110%)';
-                userPhoto.style.transform = 'scale(1.05)';
-            }
-        });
-        
-        userPhoto.addEventListener('mouseleave', () => {
-            if (window.innerWidth > 768) {
-                userPhoto.style.filter = 'grayscale(30%) contrast(120%) brightness(100%)';
-                userPhoto.style.transform = 'scale(1)';
-            }
-        });
-        
-        // Make photo clickable for surprise
-        userPhoto.addEventListener('click', () => {
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => addSurpriseElement(), i * 100);
-            }
-        });
-        
-        // Window resize handler
-        window.addEventListener('resize', () => {
-            // Recreate particles for mobile/desktop
-            const particleBg = document.getElementById('particleBg');
-            particleBg.innerHTML = '';
-            createParticles();
-            
-            // Show/hide cursor based on screen size
-            const cursor = document.getElementById('cursor');
-            if (window.innerWidth <= 768) {
-                cursor.style.display = 'none';
-            } else {
-                cursor.style.display = 'block';
-                initCursor(); // Reinitialize cursor
-            }
-            
-            // Reinitialize mobile menu on resize
-            if (window.innerWidth > 768 && mobileMenu.classList.contains('active')) {
-                mobileMenu.classList.remove('active');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            }
-        });
-        
-        // Initialize scroll animations on load
-        setTimeout(() => {
-            animateOnScroll();
-        }, 3500);
-    </script>
+      }
+      pipes = pipes.filter(function(p) { return p.x + PIPE_W > -10; });
+
+      if (Math.random() < 0.45) spawnParticles();
+      updateParticles();
+
+      if (checkCollision()) triggerDeath();
+
+    } else if (!running && !dead) {
+      bird.y     = H * 0.42 + Math.sin(ts / 600) * 8;
+      bird.angle = Math.sin(ts / 600) * 0.07;
+    }
+
+    drawGround();
+    drawParticles();
+    drawPipes();
+    drawBird();
+  }
+
+  // ── Controls ──────────────────────────────────────
+  // Keyboard
+  document.addEventListener('keydown', function(e) {
+    if (e.code === 'Space' || e.key === ' ' || e.code === 'ArrowUp') {
+      e.preventDefault();
+      flap();
+    }
+  });
+
+  // Canvas tap/click — only fires when start screen is gone
+  canvas.addEventListener('pointerdown', function(e) {
+    // Ignore taps that land on overlay buttons
+    if (!startScreen.classList.contains('hidden'))    return;
+    if (!gameOverScreen.classList.contains('hidden')) return;
+    e.preventDefault();
+    flap();
+  }, { passive: false });
+
+  // Prevent scroll during gameplay on iOS / Android
+  document.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+  }, { passive: false });
+
+  // ── Init ──────────────────────────────────────────
+  resetBird();
+  loop(performance.now());
+}
+</script>
 </body>
 </html>
